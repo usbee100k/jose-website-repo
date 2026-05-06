@@ -108,6 +108,11 @@ export const Window = ({
           dragRef.current = { dx: e.clientX - pos.x, dy: e.clientY - pos.y };
           onFocus();
         }}
+        onTouchStart={(e) => {
+          const t = e.touches[0];
+          dragRef.current = { dx: t.clientX - pos.x, dy: t.clientY - pos.y };
+          onFocus();
+        }}
       >
         <div className="flex gap-1.5">
           <button
