@@ -64,26 +64,23 @@ export default {
         sm: "calc(var(--radius) - 4px)",
       },
       keyframes: {
-        "accordion-down": {
-          from: {
-            height: "0",
-          },
-          to: {
-            height: "var(--radix-accordion-content-height)",
-          },
-        },
-        "accordion-up": {
-          from: {
-            height: "var(--radix-accordion-content-height)",
-          },
-          to: {
-            height: "0",
-          },
-        },
+        "accordion-down": { from: { height: "0" }, to: { height: "var(--radix-accordion-content-height)" } },
+        "accordion-up": { from: { height: "var(--radix-accordion-content-height)" }, to: { height: "0" } },
+        "fade-in": { "0%": { opacity: "0", transform: "translateY(8px)" }, "100%": { opacity: "1", transform: "translateY(0)" } },
+        "window-in": { "0%": { opacity: "0", transform: "scale(0.92)" }, "100%": { opacity: "1", transform: "scale(1)" } },
+        "blink": { "0%, 50%": { opacity: "1" }, "50.01%, 100%": { opacity: "0" } },
+        "type": { from: { width: "0" }, to: { width: "100%" } },
+        "boot": { "0%": { opacity: "0" }, "100%": { opacity: "1" } },
+        "progress": { "0%": { width: "0%" }, "100%": { width: "100%" } },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+        "fade-in": "fade-in 0.4s ease-out",
+        "window-in": "window-in 0.25s cubic-bezier(0.2, 0.9, 0.3, 1.2)",
+        "blink": "blink 1s step-end infinite",
+        "boot": "boot 0.6s ease-out",
+        "progress": "progress 2.4s ease-out forwards",
       },
     },
   },
