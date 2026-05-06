@@ -57,21 +57,33 @@ export const Window = ({
   }, [viewport.w, viewport.h, effectiveWidth, sidePadding]);
 
   useEffect(() => {
-    const move = (e: MouseEvent) => {
+    const apply = (clientX: number, clientY: number) => {
       if (!dragRef.current) return;
       setPos({
-        x: Math.max(sidePadding, Math.min(e.clientX - dragRef.current.dx, viewport.w - effectiveWidth - sidePadding)),
-        y: Math.max(32, Math.min(e.clientY - dragRef.current.dy, viewport.h - 80)),
+        x: Math.max(sidePadding, Math.min(clientX - dragRef.current.dx, viewport.w - effectiveWidth - sidePadding)),
+        y: Math.max(32, Math.min(clientY - dragRef.current.dy, viewport.h - 80)),
       });
+    };
+    const move = (e: MouseEvent) => apply(e.clientX, e.clientY);
+    const tmove = (e: TouchEvent) => {
+      if (!dragRef.current) return;
+      e.preventDefault();
+      const t = e.touches[0];
+      apply(t.clientX, t.clientY);
     };
     const up = () => (dragRef.current = null);
     window.addEventListener("mousemove", move);
     window.addEventListener("mouseup", up);
+    window.addEventListener("touchmove", tmove, { passive: false });
+    window.addEventListener("touchend", up);
     return () => {
       window.removeEventListener("mousemove", move);
       window.removeEventListener("mouseup", up);
+      window.removeEventListener("touchmove", tmove);
+      window.removeEventListener("touchend", up);
     };
   }, [viewport.w, viewport.h, effectiveWidth, sidePadding]);
+
 
   return (
     <div
@@ -94,6 +106,11 @@ export const Window = ({
         }}
         onMouseDown={(e) => {
           dragRef.current = { dx: e.clientX - pos.x, dy: e.clientY - pos.y };
+          onFocus();
+        }}
+        onTouchStart={(e) => {
+          const t = e.touches[0];
+          dragRef.current = { dx: t.clientX - pos.x, dy: t.clientY - pos.y };
           onFocus();
         }}
       >
