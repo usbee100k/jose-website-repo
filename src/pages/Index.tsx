@@ -59,7 +59,7 @@ const Index = () => {
       </header>
 
       {/* Desktop icons */}
-      <div className="absolute top-12 left-4 grid gap-4 z-10">
+      <div className="absolute top-9 left-0 right-0 flex flex-wrap gap-3 px-3 py-2 z-10">
         {([
           { id: "projects", label: "Projects", icon: FolderGit2 },
           { id: "contact", label: "Contact", icon: MessageCircle },
