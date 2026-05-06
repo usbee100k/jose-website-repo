@@ -3,12 +3,60 @@ import { BootScreen } from "@/components/desktop/BootScreen";
 import { Window } from "@/components/desktop/Window";
 import { Github, Linkedin, Mail, Twitter, FolderGit2, MessageCircle, HelpCircle, Link as LinkIcon } from "lucide-react";
 
-type AppId = "main" | "contact" | "projects" | "links" | "faqs";
+type AppId = "main" | "contact" | "projects" | "links" | "faqs" | `project:${string}`;
 
 interface OpenWindow {
   id: AppId;
   z: number;
 }
+
+const PROJECTS = [
+  {
+    slug: "terra-cli",
+    name: "Terra CLI",
+    desc: "a tiny tool for managing local dev envs.",
+    images: ["/placeholder.svg", "/placeholder.svg"],
+    body: [
+      "Terra CLI is a small command-line tool for spinning up and tearing down local development environments without the usual ceremony.",
+      "It wraps docker, devcontainers, and a few sane defaults into one command. Built because i kept rewriting the same bash scripts on every project.",
+      "Stack: Go, cobra, a sprinkle of bubbletea for the interactive bits. Cross-compiled for macOS, linux and windows.",
+      "Lessons learned: shipping a CLI is 20% code and 80% making the help text not embarrassing.",
+    ],
+  },
+  {
+    slug: "mossy",
+    name: "Mossy",
+    desc: "static site generator, markdown-first.",
+    images: ["/placeholder.svg", "/placeholder.svg"],
+    body: [
+      "Mossy is a markdown-first static site generator focused on tiny output and zero config.",
+      "Drop a folder of .md files in, get a fast, themeable site out. Supports drafts, RSS, and a watch mode that hot-reloads in <50ms.",
+      "Built with TypeScript and a custom markdown pipeline. Used to power my blog and a couple of friends' sites.",
+    ],
+  },
+  {
+    slug: "foliage",
+    name: "Foliage",
+    desc: "design tokens for nature-themed UIs.",
+    images: ["/placeholder.svg", "/placeholder.svg"],
+    body: [
+      "Foliage is a set of design tokens — colors, typography, spacing — pulled from forests, mosses, and old library books.",
+      "Ships as CSS variables, Tailwind preset, and Figma library. The greens are the real stars.",
+      "Open source and being slowly adopted by a few small studios.",
+    ],
+  },
+  {
+    slug: "compost",
+    name: "Compost",
+    desc: "log rotator that actually composts.",
+    images: ["/placeholder.svg", "/placeholder.svg"],
+    body: [
+      "Compost is a log rotation daemon with one weird trick: it summarizes old logs into structured digests instead of just gzipping and forgetting them.",
+      "Useful for long-running servers where you want history without the disk bill.",
+      "Written in Rust. Pluggable storage backends (local, s3, b2).",
+    ],
+  },
+] as const;
 
 const Index = () => {
   const [booted, setBooted] = useState(false);
@@ -152,13 +200,12 @@ const Index = () => {
         >
           <h2 className="text-lg font-bold mb-3">selected work</h2>
           <ul className="space-y-3">
-            {[
-              { name: "Terra CLI", desc: "a tiny tool for managing local dev envs." },
-              { name: "Mossy", desc: "static site generator, markdown-first." },
-              { name: "Foliage", desc: "design tokens for nature-themed UIs." },
-              { name: "Compost", desc: "log rotator that actually composts." },
-            ].map((p) => (
-              <li key={p.name} className="border border-border rounded-sm p-2 hover:bg-secondary transition-colors cursor-pointer">
+            {PROJECTS.map((p) => (
+              <li
+                key={p.slug}
+                onClick={() => openApp(`project:${p.slug}` as AppId)}
+                className="border border-border rounded-sm p-2 hover:bg-secondary transition-colors cursor-pointer"
+              >
                 <div className="font-semibold">{p.name}</div>
                 <div className="text-xs text-muted-foreground">{p.desc}</div>
               </li>
@@ -166,6 +213,42 @@ const Index = () => {
           </ul>
         </Window>
       )}
+
+      {PROJECTS.map((p, i) => {
+        const id = `project:${p.slug}` as AppId;
+        if (!isOpen(id)) return null;
+        return (
+          <Window
+            key={p.slug}
+            title={`${p.name.toLowerCase()}.md`}
+            initialX={200 + i * 30}
+            initialY={140 + i * 20}
+            width={520}
+            zIndex={getZ(id)}
+            onFocus={() => focusApp(id)}
+            onClose={() => closeApp(id)}
+          >
+            <h2 className="text-xl font-bold mb-1">{p.name}</h2>
+            <p className="text-xs text-muted-foreground mb-4">{p.desc}</p>
+            <div className="space-y-3">
+              {p.body.map((para, idx) => (
+                <p key={idx} className="text-sm">{para}</p>
+              ))}
+            </div>
+            <div className="mt-4 grid grid-cols-2 gap-2">
+              {p.images.map((src, idx) => (
+                <img
+                  key={idx}
+                  src={src}
+                  alt={`${p.name} screenshot ${idx + 1}`}
+                  loading="lazy"
+                  className="w-full h-auto rounded-sm border border-border bg-secondary"
+                />
+              ))}
+            </div>
+          </Window>
+        );
+      })}
 
       {isOpen("links") && (
         <Window
