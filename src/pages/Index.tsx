@@ -3,12 +3,60 @@ import { BootScreen } from "@/components/desktop/BootScreen";
 import { Window } from "@/components/desktop/Window";
 import { Github, Linkedin, Mail, Twitter, FolderGit2, MessageCircle, HelpCircle, Link as LinkIcon } from "lucide-react";
 
-type AppId = "main" | "contact" | "projects" | "links" | "faqs";
+type AppId = "main" | "contact" | "projects" | "links" | "faqs" | `project:${string}`;
 
 interface OpenWindow {
   id: AppId;
   z: number;
 }
+
+const PROJECTS = [
+  {
+    slug: "terra-cli",
+    name: "Terra CLI",
+    desc: "a tiny tool for managing local dev envs.",
+    images: ["/placeholder.svg", "/placeholder.svg"],
+    body: [
+      "Terra CLI is a small command-line tool for spinning up and tearing down local development environments without the usual ceremony.",
+      "It wraps docker, devcontainers, and a few sane defaults into one command. Built because i kept rewriting the same bash scripts on every project.",
+      "Stack: Go, cobra, a sprinkle of bubbletea for the interactive bits. Cross-compiled for macOS, linux and windows.",
+      "Lessons learned: shipping a CLI is 20% code and 80% making the help text not embarrassing.",
+    ],
+  },
+  {
+    slug: "mossy",
+    name: "Mossy",
+    desc: "static site generator, markdown-first.",
+    images: ["/placeholder.svg", "/placeholder.svg"],
+    body: [
+      "Mossy is a markdown-first static site generator focused on tiny output and zero config.",
+      "Drop a folder of .md files in, get a fast, themeable site out. Supports drafts, RSS, and a watch mode that hot-reloads in <50ms.",
+      "Built with TypeScript and a custom markdown pipeline. Used to power my blog and a couple of friends' sites.",
+    ],
+  },
+  {
+    slug: "foliage",
+    name: "Foliage",
+    desc: "design tokens for nature-themed UIs.",
+    images: ["/placeholder.svg", "/placeholder.svg"],
+    body: [
+      "Foliage is a set of design tokens — colors, typography, spacing — pulled from forests, mosses, and old library books.",
+      "Ships as CSS variables, Tailwind preset, and Figma library. The greens are the real stars.",
+      "Open source and being slowly adopted by a few small studios.",
+    ],
+  },
+  {
+    slug: "compost",
+    name: "Compost",
+    desc: "log rotator that actually composts.",
+    images: ["/placeholder.svg", "/placeholder.svg"],
+    body: [
+      "Compost is a log rotation daemon with one weird trick: it summarizes old logs into structured digests instead of just gzipping and forgetting them.",
+      "Useful for long-running servers where you want history without the disk bill.",
+      "Written in Rust. Pluggable storage backends (local, s3, b2).",
+    ],
+  },
+] as const;
 
 const Index = () => {
   const [booted, setBooted] = useState(false);
