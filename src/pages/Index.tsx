@@ -3,7 +3,17 @@ import { BootScreen } from "@/components/desktop/BootScreen";
 import { Window } from "@/components/desktop/Window";
 import { Github, Linkedin, Mail, Twitter, FolderGit2, MessageCircle, HelpCircle, Link as LinkIcon } from "lucide-react";
 
-type AppId = "main" | "contact" | "projects" | "links" | "faqs" | `project:${string}`;
+type AppId = "main" | "contact" | "projects" | "links" | "faqs" | "josetube" | `project:${string}`;
+
+interface VideoMeta {
+  title: string;
+  src: string;
+  poster: string;
+  channel: string;
+  views: string;
+  uploaded: string;
+  description: string;
+}
 
 interface OpenWindow {
   id: AppId;
