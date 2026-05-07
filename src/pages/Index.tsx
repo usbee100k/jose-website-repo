@@ -268,17 +268,6 @@ const Index = () => {
                 <p key={idx} className="text-sm">{para}</p>
               ))}
             </div>
-            <div className="mt-4 grid grid-cols-2 gap-2">
-              {p.images.map((src, idx) => (
-                <img
-                  key={idx}
-                  src={src}
-                  alt={`${p.name} screenshot ${idx + 1}`}
-                  loading="lazy"
-                  className="w-full h-auto rounded-sm border border-border bg-secondary"
-                />
-              ))}
-            </div>
             <div className="mt-4">
               <div className="text-xs uppercase tracking-wider text-muted-foreground mb-2">demo video</div>
               <button
