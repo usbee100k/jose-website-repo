@@ -68,10 +68,16 @@ const PROJECTS = [
   },
 ] as const;
 
+const DEMO_VIDEO = {
+  src: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
+  poster: "https://peach.blender.org/wp-content/uploads/title_anouncement.jpg",
+};
+
 const Index = () => {
   const [booted, setBooted] = useState(false);
   const [windows, setWindows] = useState<OpenWindow[]>([{ id: "main", z: 1 }]);
   const [topZ, setTopZ] = useState(1);
+  const [activeVideo, setActiveVideo] = useState<VideoMeta | null>(null);
 
   const openApp = (id: AppId) => {
     setTopZ((z) => z + 1);
