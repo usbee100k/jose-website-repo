@@ -20,6 +20,8 @@ interface OpenWindow {
   z: number;
 }
 
+const GTV = "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample";
+
 const PROJECTS = [
   {
     slug: "terra-cli",
@@ -32,6 +34,11 @@ const PROJECTS = [
       "Stack: Go, cobra, a sprinkle of bubbletea for the interactive bits. Cross-compiled for macOS, linux and windows.",
       "Lessons learned: shipping a CLI is 20% code and 80% making the help text not embarrassing.",
     ],
+    video: {
+      src: `${GTV}/BigBuckBunny.mp4`,
+      poster: "https://peach.blender.org/wp-content/uploads/title_anouncement.jpg",
+      duration: "3:14",
+    },
   },
   {
     slug: "mossy",
@@ -43,6 +50,11 @@ const PROJECTS = [
       "Drop a folder of .md files in, get a fast, themeable site out. Supports drafts, RSS, and a watch mode that hot-reloads in <50ms.",
       "Built with TypeScript and a custom markdown pipeline. Used to power my blog and a couple of friends' sites.",
     ],
+    video: {
+      src: `${GTV}/ElephantsDream.mp4`,
+      poster: "https://upload.wikimedia.org/wikipedia/commons/8/87/ElephantsDream-cover.jpg",
+      duration: "10:53",
+    },
   },
   {
     slug: "foliage",
@@ -54,6 +66,11 @@ const PROJECTS = [
       "Ships as CSS variables, Tailwind preset, and Figma library. The greens are the real stars.",
       "Open source and being slowly adopted by a few small studios.",
     ],
+    video: {
+      src: `${GTV}/ForBiggerBlazes.mp4`,
+      poster: `${GTV}/images/ForBiggerBlazes.jpg`,
+      duration: "0:15",
+    },
   },
   {
     slug: "compost",
@@ -65,13 +82,13 @@ const PROJECTS = [
       "Useful for long-running servers where you want history without the disk bill.",
       "Written in Rust. Pluggable storage backends (local, s3, b2).",
     ],
+    video: {
+      src: `${GTV}/Sintel.mp4`,
+      poster: `${GTV}/images/Sintel.jpg`,
+      duration: "14:48",
+    },
   },
 ] as const;
-
-const DEMO_VIDEO = {
-  src: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
-  poster: "https://peach.blender.org/wp-content/uploads/title_anouncement.jpg",
-};
 
 const Index = () => {
   const [booted, setBooted] = useState(false);
