@@ -262,9 +262,95 @@ const Index = () => {
                 />
               ))}
             </div>
+            <div className="mt-4">
+              <div className="text-xs uppercase tracking-wider text-muted-foreground mb-2">demo video</div>
+              <button
+                onClick={() => {
+                  setActiveVideo({
+                    title: `${p.name} — demo walkthrough`,
+                    src: DEMO_VIDEO.src,
+                    poster: DEMO_VIDEO.poster,
+                    channel: "jose",
+                    views: `${(i + 1) * 1234} views`,
+                    uploaded: "2 weeks ago",
+                    description: p.body[0],
+                  });
+                  openApp("josetube");
+                }}
+                className="group relative block w-full overflow-hidden rounded-sm border border-border bg-black"
+              >
+                <img
+                  src={DEMO_VIDEO.poster}
+                  alt={`${p.name} demo thumbnail`}
+                  loading="lazy"
+                  className="w-full h-40 object-cover opacity-90 group-hover:opacity-100 transition-opacity"
+                />
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="h-14 w-14 rounded-full bg-primary/90 flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
+                    <div className="ml-1 w-0 h-0 border-y-[10px] border-y-transparent border-l-[16px] border-l-primary-foreground" />
+                  </div>
+                </div>
+                <div className="absolute bottom-1 right-1 text-[10px] bg-black/70 text-white px-1 rounded">3:14</div>
+              </button>
+            </div>
           </Window>
         );
       })}
+
+      {isOpen("josetube") && activeVideo && (
+        <Window
+          title="josetube.com"
+          initialX={120}
+          initialY={70}
+          width={760}
+          zIndex={getZ("josetube")}
+          onFocus={() => focusApp("josetube")}
+          onClose={() => closeApp("josetube")}
+        >
+          <div className="-m-5">
+            <div className="flex items-center justify-between px-3 py-2 bg-primary text-primary-foreground">
+              <div className="flex items-center gap-2 font-bold">
+                <span className="h-6 w-6 rounded-sm bg-primary-foreground text-primary flex items-center justify-center text-xs">▶</span>
+                <span className="tracking-tight">JoseTube</span>
+              </div>
+              <input
+                placeholder="search josetube..."
+                className="hidden sm:block flex-1 mx-4 max-w-xs px-2 py-1 text-xs rounded-sm bg-primary-foreground/20 placeholder:text-primary-foreground/70 outline-none"
+              />
+              <div className="text-xs opacity-80">🌿 sign in</div>
+            </div>
+            <div className="bg-black">
+              <video
+                key={activeVideo.src}
+                src={activeVideo.src}
+                poster={activeVideo.poster}
+                controls
+                className="w-full max-h-[55vh] bg-black"
+              />
+            </div>
+            <div className="p-4 bg-card">
+              <h3 className="text-base font-bold mb-1">{activeVideo.title}</h3>
+              <div className="flex items-center justify-between text-xs text-muted-foreground mb-3">
+                <span>{activeVideo.views} • {activeVideo.uploaded}</span>
+                <div className="flex gap-2">
+                  <span className="px-2 py-1 bg-primary text-primary-foreground rounded-sm">👍 like</span>
+                  <span className="px-2 py-1 bg-secondary rounded-sm">↗ share</span>
+                </div>
+              </div>
+              <div className="flex items-center gap-2 mb-3 pb-3 border-b border-border">
+                <div className="h-9 w-9 rounded-full bg-primary text-primary-foreground flex items-center justify-center font-bold">J</div>
+                <div className="flex-1">
+                  <div className="text-sm font-semibold">{activeVideo.channel}</div>
+                  <div className="text-xs text-muted-foreground">12.3k subscribers</div>
+                </div>
+                <button className="px-3 py-1 text-xs bg-primary text-primary-foreground rounded-sm">subscribe</button>
+              </div>
+              <p className="text-xs text-muted-foreground leading-relaxed">{activeVideo.description}</p>
+            </div>
+          </div>
+        </Window>
+      )}
+
 
       {isOpen("links") && (
         <Window
