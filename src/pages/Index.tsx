@@ -21,13 +21,15 @@ interface OpenWindow {
 }
 
 const GTV = "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample";
+const GTVI = "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample";
+const GTVII = "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample";
+const GTVIII = "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample";
 
 const PROJECTS = [
   {
-    slug: "terra-cli",
-    name: "Terra CLI",
-    desc: "a tiny tool for managing local dev envs.",
-    images: ["/placeholder.svg", "/placeholder.svg"],
+    slug: "multitool-cli",
+    name: "Multitool CLI",
+    desc: "a tiny tool for managing local applications.",
     body: [
       "Terra CLI is a small command-line tool for spinning up and tearing down local development environments without the usual ceremony.",
       "It wraps docker, devcontainers, and a few sane defaults into one command. Built because i kept rewriting the same bash scripts on every project.",
@@ -41,49 +43,46 @@ const PROJECTS = [
     },
   },
   {
-    slug: "mossy",
-    name: "Mossy",
-    desc: "static site generator, markdown-first.",
-    images: ["/placeholder.svg", "/placeholder.svg"],
+    slug: "windows-domain-controller-lab",
+    name: "Windows Domain Controller Lab",
+    desc: "Creating a 'New Forest', documenting my proccess",
     body: [
       "Mossy is a markdown-first static site generator focused on tiny output and zero config.",
       "Drop a folder of .md files in, get a fast, themeable site out. Supports drafts, RSS, and a watch mode that hot-reloads in <50ms.",
       "Built with TypeScript and a custom markdown pipeline. Used to power my blog and a couple of friends' sites.",
     ],
     video: {
-      src: `${GTV}/ElephantsDream.mp4`,
+      src: `${GTVI}/ElephantsDream.mp4`,
       poster: "https://upload.wikimedia.org/wikipedia/commons/8/87/ElephantsDream-cover.jpg",
       duration: "10:53",
     },
   },
   {
-    slug: "foliage",
-    name: "Foliage",
-    desc: "design tokens for nature-themed UIs.",
-    images: ["/placeholder.svg", "/placeholder.svg"],
+    slug: "cisco-packet-tracer-network",
+    name: "Cisco Packet Tracer Network",
+    desc: "Recreating enterprise level networks virtually.",
     body: [
       "Foliage is a set of design tokens — colors, typography, spacing — pulled from forests, mosses, and old library books.",
       "Ships as CSS variables, Tailwind preset, and Figma library. The greens are the real stars.",
       "Open source and being slowly adopted by a few small studios.",
     ],
     video: {
-      src: `${GTV}/ForBiggerBlazes.mp4`,
+      src: `${GTVII}/ForBiggerBlazes.mp4`,
       poster: `${GTV}/images/ForBiggerBlazes.jpg`,
       duration: "0:15",
     },
   },
   {
-    slug: "compost",
-    name: "Compost",
-    desc: "log rotator that actually composts.",
-    images: ["/placeholder.svg", "/placeholder.svg"],
+    slug: "how-i-coded-my-portfolio",
+    name: "How I Coded My Portfolio",
+    desc: "How did I do this and why?",
     body: [
       "Compost is a log rotation daemon with one weird trick: it summarizes old logs into structured digests instead of just gzipping and forgetting them.",
       "Useful for long-running servers where you want history without the disk bill.",
       "Written in Rust. Pluggable storage backends (local, s3, b2).",
     ],
     video: {
-      src: `${GTV}/Sintel.mp4`,
+      src: `${GTVIII}/Sintel.mp4`,
       poster: `${GTV}/images/Sintel.jpg`,
       duration: "14:48",
     },
