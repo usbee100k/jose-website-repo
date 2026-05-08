@@ -64,8 +64,8 @@ const PROJECTS = [
       "Built with TypeScript and a custom markdown pipeline. Used to power my blog and a couple of friends' sites.",
     ],
     video: {
-      src: `${GTVI}/ElephantsDream.mp4`,
-      poster: "https://upload.wikimedia.org/wikipedia/commons/8/87/ElephantsDream-cover.jpg",
+      src: `/testfoootage1.mp4`,
+      poster: makePoster("windows-dc-lab.mp4"),
       duration: "10:53",
     },
   },
