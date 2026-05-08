@@ -20,10 +20,34 @@ interface OpenWindow {
   z: number;
 }
 
-const GTV = "https://raw.githubusercontent.com/usbee100k/jose-s-digital-desktop/refs/heads/main/public/testfootage.mp4";
+const GTV = "/gtv-mock";
 const GTVI = "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample";
 const GTVII = "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample";
 const GTVIII = "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample";
+const TEST_FOOTAGE = "/testfootage.mp4";
+const TEST_POSTER = `data:image/svg+xml;utf8,${encodeURIComponent(
+  `<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720">
+    <defs>
+      <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0%" stop-color="#1f2937"/>
+        <stop offset="100%" stop-color="#111827"/>
+      </linearGradient>
+    </defs>
+    <rect width="1280" height="720" fill="url(#g)"/>
+    <circle cx="640" cy="360" r="78" fill="#f8fafc" opacity="0.95"/>
+    <polygon points="620,320 620,400 695,360" fill="#111827"/>
+    <text x="640" y="490" text-anchor="middle" font-family="Arial, sans-serif" font-size="34" fill="#e5e7eb">
+      testfootage.mp4
+    </text>
+  </svg>`,
+)}`;
+
+const resolveDemoMedia = (url: string, kind: "video" | "image") => {
+  if (url.startsWith(`${GTV}/`)) {
+    return kind === "video" ? TEST_FOOTAGE : TEST_POSTER;
+  }
+  return url;
+};
 
 const PROJECTS = [
   {
@@ -273,8 +297,8 @@ const Index = () => {
                 onClick={() => {
                   setActiveVideo({
                     title: `${p.name} — demo walkthrough`,
-                    src: p.video.src,
-                    poster: p.video.poster,
+                    src: resolveDemoMedia(p.video.src, "video"),
+                    poster: resolveDemoMedia(p.video.poster, "image"),
                     channel: "jose",
                     views: `${(i + 1) * 1234} views`,
                     uploaded: "2 weeks ago",
@@ -285,7 +309,7 @@ const Index = () => {
                 className="group relative block w-full overflow-hidden rounded-sm border border-border bg-black"
               >
                 <img
-                  src={p.video.poster}
+                  src={resolveDemoMedia(p.video.poster, "image")}
                   alt={`${p.name} demo thumbnail`}
                   loading="lazy"
                   className="w-full h-40 object-cover opacity-90 group-hover:opacity-100 transition-opacity"
