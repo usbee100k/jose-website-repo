@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { BootScreen } from "@/components/desktop/BootScreen";
 import { Window } from "@/components/desktop/Window";
-import { Github, Linkedin, Mail, Twitter, FolderGit2, MessageCircle, HelpCircle, Link as LinkIcon } from "lucide-react";
+import { Github, Linkedin, Mail, Twitter, FolderGit2, MessageCircle, HelpCircle, Link as LinkIcon, User } from "lucide-react";
 
-type AppId = "main" | "contact" | "projects" | "links" | "faqs" | "josetube" | `project:${string}`;
+type AppId = "main" | "contact" | "projects" | "links" | "faqs" | "josetube" | "about" | `project:${string}`;
 
 interface VideoMeta {
   title: string;
@@ -153,6 +153,7 @@ const Index = () => {
       {/* Desktop icons */}
       <div className="absolute top-9 left-2 flex flex-col gap-3 p-2 z-0">
         {([
+          { id: "about", label: "About Me", icon: User },
           { id: "projects", label: "Projects", icon: FolderGit2 },
           { id: "contact", label: "Contact", icon: MessageCircle },
           { id: "links", label: "Links", icon: LinkIcon },
@@ -366,6 +367,45 @@ const Index = () => {
               </div>
               <p className="text-xs text-muted-foreground leading-relaxed">{activeVideo.description}</p>
             </div>
+          </div>
+        </Window>
+      )}
+
+      {isOpen("about") && (
+        <Window
+          title="about-me.txt"
+          initialX={200}
+          initialY={100}
+          width={460}
+          zIndex={getZ("about")}
+          onFocus={() => focusApp("about")}
+          onClose={() => closeApp("about")}
+        >
+          <div className="flex items-start justify-between gap-3 mb-3 pb-3 border-b border-border">
+            <div>
+              <h2 className="text-xl font-bold">About Me</h2>
+              <p className="text-xs text-muted-foreground">a quick intro</p>
+            </div>
+            <img
+              src="/favicon.ico"
+              alt="Jose's favicon"
+              className="h-10 w-10 rounded-sm border border-border shrink-0"
+            />
+          </div>
+          <div className="space-y-3 text-sm">
+            <p>
+              hi, i'm Jose — a tech enthusiast based in Santa Cruz (originally from Seattle).
+              i love building tools, breaking labs, and figuring out how things work under the hood.
+            </p>
+            <p>
+              my interests sit at the crossroads of networking, sysadmin work, and full-stack
+              development. lately i've been deep in homelab projects, CLI tooling, and learning
+              everything i can about enterprise infrastructure.
+            </p>
+            <p>
+              when i'm not in front of a terminal, you'll find me chasing waves, hiking the
+              redwoods, or hunting for the next great cup of coffee.
+            </p>
           </div>
         </Window>
       )}
