@@ -153,6 +153,7 @@ const Index = () => {
       {/* Desktop icons */}
       <div className="absolute top-9 left-2 flex flex-col gap-3 p-2 z-0">
         {([
+          { id: "about", label: "About Me", icon: User },
           { id: "projects", label: "Projects", icon: FolderGit2 },
           { id: "contact", label: "Contact", icon: MessageCircle },
           { id: "links", label: "Links", icon: LinkIcon },
