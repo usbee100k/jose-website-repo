@@ -342,6 +342,8 @@ const Index = () => {
                 src={activeVideo.src}
                 poster={activeVideo.poster}
                 controls
+                autoPlay
+                playsInline
                 className="w-full max-h-[55vh] bg-black"
               />
             </div>
