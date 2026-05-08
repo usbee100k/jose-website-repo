@@ -20,12 +20,7 @@ interface OpenWindow {
   z: number;
 }
 
-const GTV = "/gtv-mock";
-const GTVI = "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample";
-const GTVII = "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample";
-const GTVIII = "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample";
-const TEST_FOOTAGE = "/testfootage.mp4";
-const TEST_POSTER = `data:image/svg+xml;utf8,${encodeURIComponent(
+const makePoster = (label: string) => `data:image/svg+xml;utf8,${encodeURIComponent(
   `<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720">
     <defs>
       <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
@@ -37,17 +32,10 @@ const TEST_POSTER = `data:image/svg+xml;utf8,${encodeURIComponent(
     <circle cx="640" cy="360" r="78" fill="#f8fafc" opacity="0.95"/>
     <polygon points="620,320 620,400 695,360" fill="#111827"/>
     <text x="640" y="490" text-anchor="middle" font-family="Arial, sans-serif" font-size="34" fill="#e5e7eb">
-      testfootage.mp4
+      ${label}
     </text>
   </svg>`,
 )}`;
-
-const resolveDemoMedia = (url: string, kind: "video" | "image") => {
-  if (url.startsWith(`${GTV}/`)) {
-    return kind === "video" ? TEST_FOOTAGE : TEST_POSTER;
-  }
-  return url;
-};
 
 const PROJECTS = [
   {
@@ -61,8 +49,8 @@ const PROJECTS = [
       "Lessons learned: shipping a CLI is 20% code and 80% making the help text not embarrassing.",
     ],
     video: {
-      src: `${GTV}/BigBuckBunny.mp4`,
-      poster: "https://peach.blender.org/wp-content/uploads/title_anouncement.jpg",
+      src: `/testfoootage.mp4`,
+      poster: makePoster("multitool-cli.mp4"),
       duration: "3:14",
     },
   },
@@ -76,8 +64,8 @@ const PROJECTS = [
       "Built with TypeScript and a custom markdown pipeline. Used to power my blog and a couple of friends' sites.",
     ],
     video: {
-      src: `${GTVI}/ElephantsDream.mp4`,
-      poster: "https://upload.wikimedia.org/wikipedia/commons/8/87/ElephantsDream-cover.jpg",
+      src: `/testfoootage1.mp4`,
+      poster: makePoster("windows-dc-lab.mp4"),
       duration: "10:53",
     },
   },
@@ -91,8 +79,8 @@ const PROJECTS = [
       "Open source and being slowly adopted by a few small studios.",
     ],
     video: {
-      src: `${GTVII}/ForBiggerBlazes.mp4`,
-      poster: `${GTV}/images/ForBiggerBlazes.jpg`,
+      src: `/testfoootage2.mp4`,
+      poster: makePoster("cisco-packet-tracer.mp4"),
       duration: "0:15",
     },
   },
@@ -106,8 +94,8 @@ const PROJECTS = [
       "Written in Rust. Pluggable storage backends (local, s3, b2).",
     ],
     video: {
-      src: `${GTVIII}/Sintel.mp4`,
-      poster: `${GTV}/images/Sintel.jpg`,
+      src: `/testfoootage3.mp4`,
+      poster: makePoster("portfolio.mp4"),
       duration: "14:48",
     },
   },
@@ -297,8 +285,8 @@ const Index = () => {
                 onClick={() => {
                   setActiveVideo({
                     title: `${p.name} — demo walkthrough`,
-                    src: resolveDemoMedia(p.video.src, "video"),
-                    poster: resolveDemoMedia(p.video.poster, "image"),
+                    src: p.video.src,
+                    poster: p.video.poster,
                     channel: "jose",
                     views: `${(i + 1) * 1234} views`,
                     uploaded: "2 weeks ago",
@@ -309,7 +297,7 @@ const Index = () => {
                 className="group relative block w-full overflow-hidden rounded-sm border border-border bg-black"
               >
                 <img
-                  src={resolveDemoMedia(p.video.poster, "image")}
+                  src={p.video.poster}
                   alt={`${p.name} demo thumbnail`}
                   loading="lazy"
                   className="w-full h-40 object-cover opacity-90 group-hover:opacity-100 transition-opacity"
