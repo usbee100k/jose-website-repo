@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { BootScreen } from "@/components/desktop/BootScreen";
 import { Window } from "@/components/desktop/Window";
-import { Github, Linkedin, Mail, Twitter, FolderGit2, MessageCircle, HelpCircle, Link as LinkIcon } from "lucide-react";
+import { Github, Linkedin, Mail, Twitter, FolderGit2, MessageCircle, HelpCircle, Link as LinkIcon, User } from "lucide-react";
 
-type AppId = "main" | "contact" | "projects" | "links" | "faqs" | "josetube" | `project:${string}`;
+type AppId = "main" | "contact" | "projects" | "links" | "faqs" | "josetube" | "about" | `project:${string}`;
 
 interface VideoMeta {
   title: string;
