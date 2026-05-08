@@ -49,8 +49,8 @@ const PROJECTS = [
       "Lessons learned: shipping a CLI is 20% code and 80% making the help text not embarrassing.",
     ],
     video: {
-      src: `${GTV}/BigBuckBunny.mp4`,
-      poster: "https://peach.blender.org/wp-content/uploads/title_anouncement.jpg",
+      src: `/testfoootage.mp4`,
+      poster: makePoster("multitool-cli.mp4"),
       duration: "3:14",
     },
   },
