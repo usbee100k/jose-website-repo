@@ -212,9 +212,9 @@ const Index = () => {
         >
           <h2 className="text-lg font-bold mb-3">get in touch</h2>
           <ul className="space-y-2">
-            <li className="flex items-center gap-2"><Mail className="h-4 w-4 text-primary" /> <a href="mailto:hello@jose.dev" className="hover:underline">hello@jose.dev</a></li>
+            <li className="flex items-center gap-2"><Mail className="h-4 w-4 text-primary" /> <a href="mailto:josejcorral77.jc@gmail.com" className="hover:underline">josejcorral77.jc@gmail.com</a></li>
             <li className="flex items-center gap-2"><Twitter className="h-4 w-4 text-primary" /> @jose</li>
-            <li className="flex items-center gap-2"><Linkedin className="h-4 w-4 text-primary" /> linkedin.com/in/jose</li>
+            <li className="flex items-center gap-2"><Linkedin className="h-4 w-4 text-primary" /> linkedin.com/in/josecorr</li>
           </ul>
           <p className="mt-4 text-xs text-muted-foreground">i usually reply within a day or two.</p>
         </Window>
@@ -369,7 +369,7 @@ const Index = () => {
         >
           <h2 className="text-lg font-bold mb-3">around the web</h2>
           <ul className="space-y-2">
-            <li className="flex items-center gap-2"><Github className="h-4 w-4 text-primary" /> github.com/jose</li>
+            <li className="flex items-center gap-2"><Github className="h-4 w-4 text-primary" /> github.com/usbee100k</li>
             <li className="flex items-center gap-2"><Twitter className="h-4 w-4 text-primary" /> twitter.com/jose</li>
             <li className="flex items-center gap-2"><LinkIcon className="h-4 w-4 text-primary" /> jose.dev/blog</li>
             <li className="flex items-center gap-2"><LinkIcon className="h-4 w-4 text-primary" /> read.cv/jose</li>
@@ -390,8 +390,8 @@ const Index = () => {
           <h2 className="text-lg font-bold mb-3">frequently asked</h2>
           <div className="space-y-3">
             {[
-              { q: "where are you based?", a: "somewhere with too many trees and not enough wifi." },
-              { q: "are you available for work?", a: "open to interesting projects — ping me." },
+              { q: "where are you based?", a: "Seattle Wa originally but i recently relocated to Santa Cruz." },
+              { q: "are you available for work?", a: "hungry for work in tech but will need 2 weeks atleast — ping me." },
               { q: "what stack do you use?", a: "typescript, react, go, postgres, and lots of coffee." },
               { q: "why the desktop theme?", a: "i like windows that overlap. don't you?" },
             ].map((f) => (
