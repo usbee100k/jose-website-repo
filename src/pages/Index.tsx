@@ -455,14 +455,16 @@ const Index = () => {
               </div>
             ))}
           </div>
-          <div className="mt-4 pt-3 border-t border-border">
-            <button
-              onClick={() => openApp("more-faqs")}
-              className="w-full px-3 py-2 text-sm bg-primary text-primary-foreground rounded-sm hover:opacity-90 transition-opacity"
-            >
-              more questions? →
-            </button>
-          </div>
+          {!isOpen("more-faqs") && (
+            <div className="mt-4 pt-3 border-t border-border">
+              <button
+                onClick={() => openApp("more-faqs")}
+                className="w-full px-3 py-2 text-sm bg-primary text-primary-foreground rounded-sm hover:opacity-90 transition-opacity"
+              >
+                more questions? →
+              </button>
+            </div>
+          )}
         </Window>
       )}
 
