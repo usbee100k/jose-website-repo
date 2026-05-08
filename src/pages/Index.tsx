@@ -20,7 +20,7 @@ interface OpenWindow {
   z: number;
 }
 
-const GTV = "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample";
+const GTV = "https://raw.githubusercontent.com/usbee100k/jose-s-digital-desktop/refs/heads/main/public/testfootage.mp4";
 const GTVI = "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample";
 const GTVII = "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample";
 const GTVIII = "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample";
