@@ -50,8 +50,8 @@ const PROJECTS = [
     ],
     video: {
       src: `/testfoootage.mp4`,
-      poster: makePoster("multitool-cli.mp4"),
-      duration: "3:14",
+      poster: `/desktopimg.png`,
+      duration: "0:09",
     },
   },
   {
