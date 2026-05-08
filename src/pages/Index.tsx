@@ -79,8 +79,8 @@ const PROJECTS = [
       "Open source and being slowly adopted by a few small studios.",
     ],
     video: {
-      src: `${GTVII}/ForBiggerBlazes.mp4`,
-      poster: `${GTV}/images/ForBiggerBlazes.jpg`,
+      src: `/testfoootage2.mp4`,
+      poster: makePoster("cisco-packet-tracer.mp4"),
       duration: "0:15",
     },
   },
@@ -94,8 +94,8 @@ const PROJECTS = [
       "Written in Rust. Pluggable storage backends (local, s3, b2).",
     ],
     video: {
-      src: `${GTVIII}/Sintel.mp4`,
-      poster: `${GTV}/images/Sintel.jpg`,
+      src: `/testfoootage3.mp4`,
+      poster: makePoster("portfolio.mp4"),
       duration: "14:48",
     },
   },
