@@ -3,7 +3,7 @@ import { BootScreen } from "@/components/desktop/BootScreen";
 import { Window } from "@/components/desktop/Window";
 import { Github, Linkedin, Mail, Twitter, FolderGit2, MessageCircle, HelpCircle, Link as LinkIcon, User } from "lucide-react";
 
-type AppId = "main" | "contact" | "projects" | "links" | "faqs" | "josetube" | "about" | `project:${string}`;
+type AppId = "main" | "contact" | "projects" | "links" | "faqs" | "more-faqs" | "josetube" | "about" | `project:${string}`;
 
 interface VideoMeta {
   title: string;
@@ -448,6 +448,49 @@ const Index = () => {
               { q: "are you available for work?", a: "hungry for work in tech but will need 2 weeks atleast — ping me." },
               { q: "what stack do you use?", a: "typescript, react, go, postgres, and lots of coffee." },
               { q: "why the desktop theme?", a: "i like windows that overlap. don't you?" },
+            ].map((f) => (
+              <div key={f.q}>
+                <div className="font-semibold">› {f.q}</div>
+                <div className="text-muted-foreground text-xs mt-0.5">{f.a}</div>
+              </div>
+            ))}
+          </div>
+          <div className="mt-4 pt-3 border-t border-border">
+            <button
+              onClick={() => openApp("more-faqs")}
+              className="w-full px-3 py-2 text-sm bg-primary text-primary-foreground rounded-sm hover:opacity-90 transition-opacity"
+            >
+              more questions? →
+            </button>
+          </div>
+        </Window>
+      )}
+
+      {isOpen("more-faqs") && (
+        <Window
+          title="more-faqs.md"
+          initialX={180}
+          initialY={120}
+          width={460}
+          zIndex={getZ("more-faqs")}
+          onFocus={() => focusApp("more-faqs")}
+          onClose={() => closeApp("more-faqs")}
+        >
+          <h2 className="text-lg font-bold mb-3">more questions</h2>
+          <div className="max-h-[55vh] overflow-y-auto pr-2 space-y-3">
+            {[
+              { q: "what got you into tech?", a: "tinkering with old PCs as a kid and never really stopping." },
+              { q: "favorite project so far?", a: "the windows domain controller lab — felt like running a tiny enterprise." },
+              { q: "mac, windows, or linux?", a: "linux for servers, mac for daily driving, windows for the lab." },
+              { q: "favorite editor?", a: "vscode with vim keybindings. fight me." },
+              { q: "coffee or tea?", a: "coffee. always coffee. pour-over on weekends." },
+              { q: "do you game?", a: "occasionally — mostly strategy and the odd shooter with friends." },
+              { q: "what are you learning right now?", a: "deeper networking — subnetting, vlans, and routing protocols." },
+              { q: "any certifications?", a: "working toward CompTIA Network+ and eventually CCNA." },
+              { q: "open to remote work?", a: "yep, remote or hybrid. bay area in person also works." },
+              { q: "favorite spot in santa cruz?", a: "anywhere along west cliff at sunset." },
+              { q: "do you blog?", a: "writing more lately — mostly homelab notes and project breakdowns." },
+              { q: "how can i contact you?", a: "check the contact window — email is fastest." },
             ].map((f) => (
               <div key={f.q}>
                 <div className="font-semibold">› {f.q}</div>
