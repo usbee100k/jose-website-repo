@@ -20,12 +20,7 @@ interface OpenWindow {
   z: number;
 }
 
-const GTV = "/gtv-mock";
-const GTVI = "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample";
-const GTVII = "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample";
-const GTVIII = "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample";
-const TEST_FOOTAGE = "/testfootage.mp4";
-const TEST_POSTER = `data:image/svg+xml;utf8,${encodeURIComponent(
+const makePoster = (label: string) => `data:image/svg+xml;utf8,${encodeURIComponent(
   `<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720">
     <defs>
       <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
@@ -37,17 +32,10 @@ const TEST_POSTER = `data:image/svg+xml;utf8,${encodeURIComponent(
     <circle cx="640" cy="360" r="78" fill="#f8fafc" opacity="0.95"/>
     <polygon points="620,320 620,400 695,360" fill="#111827"/>
     <text x="640" y="490" text-anchor="middle" font-family="Arial, sans-serif" font-size="34" fill="#e5e7eb">
-      testfootage.mp4
+      ${label}
     </text>
   </svg>`,
 )}`;
-
-const resolveDemoMedia = (url: string, kind: "video" | "image") => {
-  if (url.startsWith(`${GTV}/`)) {
-    return kind === "video" ? TEST_FOOTAGE : TEST_POSTER;
-  }
-  return url;
-};
 
 const PROJECTS = [
   {
