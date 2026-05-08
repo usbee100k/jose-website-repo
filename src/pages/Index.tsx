@@ -285,8 +285,8 @@ const Index = () => {
                 onClick={() => {
                   setActiveVideo({
                     title: `${p.name} — demo walkthrough`,
-                    src: resolveDemoMedia(p.video.src, "video"),
-                    poster: resolveDemoMedia(p.video.poster, "image"),
+                    src: p.video.src,
+                    poster: p.video.poster,
                     channel: "jose",
                     views: `${(i + 1) * 1234} views`,
                     uploaded: "2 weeks ago",
@@ -297,7 +297,7 @@ const Index = () => {
                 className="group relative block w-full overflow-hidden rounded-sm border border-border bg-black"
               >
                 <img
-                  src={resolveDemoMedia(p.video.poster, "image")}
+                  src={p.video.poster}
                   alt={`${p.name} demo thumbnail`}
                   loading="lazy"
                   className="w-full h-40 object-cover opacity-90 group-hover:opacity-100 transition-opacity"
