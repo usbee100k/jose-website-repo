@@ -1,9 +1,18 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { BootScreen } from "@/components/desktop/BootScreen";
 import { Window } from "@/components/desktop/Window";
-import { Github, Linkedin, Mail, Twitter, FolderGit2, MessageCircle, HelpCircle, Link as LinkIcon, User } from "lucide-react";
+import { Github, Linkedin, Mail, Twitter, FolderGit2, MessageCircle, HelpCircle, Link as LinkIcon, User, Newspaper, Image as ImageIcon, Video as VideoIcon, Trash2, Plus } from "lucide-react";
 
-type AppId = "main" | "contact" | "projects" | "links" | "faqs" | "more-faqs" | "josetube" | "about" | `project:${string}`;
+type AppId = "main" | "contact" | "projects" | "links" | "faqs" | "more-faqs" | "josetube" | "about" | "blog" | `project:${string}`;
+
+interface BlogPost {
+  id: string;
+  title: string;
+  body: string;
+  imageDataUrl?: string;
+  videoDataUrl?: string;
+  createdAt: number;
+}
 
 interface VideoMeta {
   title: string;
@@ -106,6 +115,62 @@ const Index = () => {
   const [windows, setWindows] = useState<OpenWindow[]>([{ id: "main", z: 1 }]);
   const [topZ, setTopZ] = useState(1);
   const [activeVideo, setActiveVideo] = useState<VideoMeta | null>(null);
+  const [posts, setPosts] = useState<BlogPost[]>(() => {
+    if (typeof window === "undefined") return [];
+    try {
+      const raw = localStorage.getItem("jose-os.blog.posts");
+      return raw ? (JSON.parse(raw) as BlogPost[]) : [];
+    } catch {
+      return [];
+    }
+  });
+  const [showComposer, setShowComposer] = useState(false);
+  const [draftTitle, setDraftTitle] = useState("");
+  const [draftBody, setDraftBody] = useState("");
+  const [draftImage, setDraftImage] = useState<string | undefined>();
+  const [draftVideo, setDraftVideo] = useState<string | undefined>();
+  const imageInputRef = useRef<HTMLInputElement>(null);
+  const videoInputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    try {
+      localStorage.setItem("jose-os.blog.posts", JSON.stringify(posts));
+    } catch {
+      // ignore quota errors
+    }
+  }, [posts]);
+
+  const fileToDataUrl = (file: File) =>
+    new Promise<string>((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result as string);
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
+    });
+
+  const resetComposer = () => {
+    setDraftTitle("");
+    setDraftBody("");
+    setDraftImage(undefined);
+    setDraftVideo(undefined);
+    setShowComposer(false);
+  };
+
+  const publishPost = () => {
+    if (!draftTitle.trim() && !draftBody.trim() && !draftImage && !draftVideo) return;
+    const post: BlogPost = {
+      id: crypto.randomUUID(),
+      title: draftTitle.trim() || "untitled post",
+      body: draftBody.trim(),
+      imageDataUrl: draftImage,
+      videoDataUrl: draftVideo,
+      createdAt: Date.now(),
+    };
+    setPosts((p) => [post, ...p]);
+    resetComposer();
+  };
+
+  const deletePost = (id: string) => setPosts((p) => p.filter((x) => x.id !== id));
 
   const openApp = (id: AppId) => {
     setTopZ((z) => z + 1);
@@ -158,6 +223,7 @@ const Index = () => {
           { id: "contact", label: "Contact", icon: MessageCircle },
           { id: "links", label: "Links", icon: LinkIcon },
           { id: "faqs", label: "FAQs", icon: HelpCircle },
+          { id: "blog", label: "Blog", icon: Newspaper },
         ] as const).map(({ id, label, icon: Icon }) => (
           <button
             key={id}
@@ -501,6 +567,168 @@ const Index = () => {
                 <div className="text-muted-foreground text-xs mt-0.5">{f.a}</div>
               </div>
             ))}
+          </div>
+        </Window>
+      )}
+
+      {isOpen("blog") && (
+        <Window
+          title="blog.app"
+          initialX={typeof window !== "undefined" ? Math.max(60, window.innerWidth / 2 - 280) : 120}
+          initialY={60}
+          width={560}
+          zIndex={getZ("blog")}
+          onFocus={() => focusApp("blog")}
+          onClose={() => closeApp("blog")}
+        >
+          <div className="-m-5">
+            {/* Blog header */}
+            <div className="px-5 py-4 bg-gradient-to-r from-primary to-primary/70 text-primary-foreground">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h2 className="text-2xl font-bold tracking-tight">jose's blog</h2>
+                  <p className="text-xs opacity-80">notes, builds, and the occasional rant.</p>
+                </div>
+                <button
+                  onClick={() => setShowComposer((s) => !s)}
+                  className="flex items-center gap-1 px-3 py-1.5 text-xs font-semibold bg-primary-foreground text-primary rounded-sm hover:opacity-90"
+                >
+                  <Plus className="h-3.5 w-3.5" />
+                  {showComposer ? "cancel" : "new post"}
+                </button>
+              </div>
+            </div>
+
+            <div className="max-h-[60vh] overflow-y-auto">
+              {/* Composer */}
+              {showComposer && (
+                <div className="p-4 bg-secondary border-b border-border space-y-3">
+                  <input
+                    value={draftTitle}
+                    onChange={(e) => setDraftTitle(e.target.value)}
+                    placeholder="post title..."
+                    className="w-full px-3 py-2 text-sm bg-background border border-border rounded-sm outline-none focus:ring-2 focus:ring-primary"
+                  />
+                  <textarea
+                    value={draftBody}
+                    onChange={(e) => setDraftBody(e.target.value)}
+                    placeholder="what's on your mind?"
+                    rows={4}
+                    className="w-full px-3 py-2 text-sm bg-background border border-border rounded-sm outline-none focus:ring-2 focus:ring-primary resize-y"
+                  />
+
+                  {draftImage && (
+                    <div className="relative">
+                      <img src={draftImage} alt="draft attachment" className="w-full max-h-56 object-cover rounded-sm border border-border" />
+                      <button
+                        onClick={() => setDraftImage(undefined)}
+                        className="absolute top-1 right-1 px-2 py-0.5 text-[10px] bg-black/70 text-white rounded-sm"
+                      >
+                        remove
+                      </button>
+                    </div>
+                  )}
+                  {draftVideo && (
+                    <div className="relative">
+                      <video src={draftVideo} controls className="w-full max-h-56 rounded-sm border border-border bg-black" />
+                      <button
+                        onClick={() => setDraftVideo(undefined)}
+                        className="absolute top-1 right-1 px-2 py-0.5 text-[10px] bg-black/70 text-white rounded-sm"
+                      >
+                        remove
+                      </button>
+                    </div>
+                  )}
+
+                  <div className="flex flex-wrap items-center gap-2">
+                    <input
+                      ref={imageInputRef}
+                      type="file"
+                      accept="image/*"
+                      className="hidden"
+                      onChange={async (e) => {
+                        const f = e.target.files?.[0];
+                        if (f) setDraftImage(await fileToDataUrl(f));
+                        e.target.value = "";
+                      }}
+                    />
+                    <input
+                      ref={videoInputRef}
+                      type="file"
+                      accept="video/*"
+                      className="hidden"
+                      onChange={async (e) => {
+                        const f = e.target.files?.[0];
+                        if (f) setDraftVideo(await fileToDataUrl(f));
+                        e.target.value = "";
+                      }}
+                    />
+                    <button
+                      onClick={() => imageInputRef.current?.click()}
+                      className="flex items-center gap-1 px-2.5 py-1.5 text-xs bg-background border border-border rounded-sm hover:bg-accent"
+                    >
+                      <ImageIcon className="h-3.5 w-3.5" /> photo
+                    </button>
+                    <button
+                      onClick={() => videoInputRef.current?.click()}
+                      className="flex items-center gap-1 px-2.5 py-1.5 text-xs bg-background border border-border rounded-sm hover:bg-accent"
+                    >
+                      <VideoIcon className="h-3.5 w-3.5" /> video
+                    </button>
+                    <div className="flex-1" />
+                    <button
+                      onClick={resetComposer}
+                      className="px-3 py-1.5 text-xs bg-background border border-border rounded-sm hover:bg-accent"
+                    >
+                      cancel
+                    </button>
+                    <button
+                      onClick={publishPost}
+                      className="px-3 py-1.5 text-xs font-semibold bg-primary text-primary-foreground rounded-sm hover:opacity-90"
+                    >
+                      publish
+                    </button>
+                  </div>
+                </div>
+              )}
+
+              {/* Posts feed */}
+              <div className="p-4 space-y-4 bg-card">
+                {posts.length === 0 && !showComposer && (
+                  <div className="text-center py-10 text-sm text-muted-foreground">
+                    no posts yet — click <span className="font-semibold">new post</span> to write your first update.
+                  </div>
+                )}
+                {posts.map((post) => (
+                  <article key={post.id} className="border border-border rounded-sm bg-background overflow-hidden">
+                    <header className="flex items-start justify-between gap-2 px-3 pt-3">
+                      <div>
+                        <h3 className="text-base font-bold leading-tight">{post.title}</h3>
+                        <div className="text-[11px] text-muted-foreground mt-0.5">
+                          {new Date(post.createdAt).toLocaleString()}
+                        </div>
+                      </div>
+                      <button
+                        onClick={() => deletePost(post.id)}
+                        className="text-muted-foreground hover:text-destructive p-1"
+                        aria-label="delete post"
+                      >
+                        <Trash2 className="h-3.5 w-3.5" />
+                      </button>
+                    </header>
+                    {post.imageDataUrl && (
+                      <img src={post.imageDataUrl} alt={post.title} className="w-full max-h-80 object-cover mt-2" />
+                    )}
+                    {post.videoDataUrl && (
+                      <video src={post.videoDataUrl} controls className="w-full max-h-80 mt-2 bg-black" />
+                    )}
+                    {post.body && (
+                      <p className="px-3 py-3 text-sm whitespace-pre-wrap leading-relaxed">{post.body}</p>
+                    )}
+                  </article>
+                ))}
+              </div>
+            </div>
           </div>
         </Window>
       )}
