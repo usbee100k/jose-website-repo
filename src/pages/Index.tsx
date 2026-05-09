@@ -223,6 +223,7 @@ const Index = () => {
           { id: "contact", label: "Contact", icon: MessageCircle },
           { id: "links", label: "Links", icon: LinkIcon },
           { id: "faqs", label: "FAQs", icon: HelpCircle },
+          { id: "blog", label: "Blog", icon: Newspaper },
         ] as const).map(({ id, label, icon: Icon }) => (
           <button
             key={id}
