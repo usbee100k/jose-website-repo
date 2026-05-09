@@ -46,13 +46,14 @@ export const Window = ({
   const bottomChromePx = 60;
   /** Minimum window height when there is enough vertical space (scroll lives in the body). */
   const minWindowHeightPx = 168;
+  /** Title bar row — used to cap scrollable body height in auto-size mode. */
+  const titleBarPx = 40;
   /** Keep at least this much of the window visible above the taskbar when dragged far down. */
   const minVisibleWhenDraggedPx = 40;
   const bottomLimit = viewport.h - bottomChromePx;
   const maxY = Math.max(32, bottomLimit - minVisibleWhenDraggedPx);
 
-  const preferredHeight =
-    preferredHeightProp ?? Math.min(560, Math.round(viewport.h * 0.72));
+  const explicitOuterHeight = preferredHeightProp !== undefined;
 
   const clampedInitial = {
     x: Math.max(sidePadding, Math.min(initialX, viewport.w - effectiveWidth - sidePadding)),
@@ -71,11 +72,17 @@ export const Window = ({
   }, [viewport.w, viewport.h, effectiveWidth, sidePadding, maxY]);
 
   const spaceBelow = bottomLimit - pos.y;
-  const frameHeight = (() => {
-    let h = Math.min(preferredHeight, spaceBelow);
-    h = Math.max(h, Math.min(minWindowHeightPx, spaceBelow));
-    return Math.max(h, 0);
-  })();
+  /** Fixed outer height when `height` prop is set; otherwise body scrolls with natural window height. */
+  const frameHeight = explicitOuterHeight
+    ? (() => {
+        const ph = preferredHeightProp as number;
+        let h = Math.min(ph, spaceBelow);
+        h = Math.max(h, Math.min(minWindowHeightPx, spaceBelow));
+        return Math.max(h, 0);
+      })()
+    : undefined;
+
+  const bodyMaxHeightWhenAuto = Math.max(0, spaceBelow - titleBarPx);
 
   useEffect(() => {
     const apply = (clientX: number, clientY: number) => {
@@ -112,8 +119,9 @@ export const Window = ({
         left: pos.x,
         top: pos.y,
         width: effectiveWidth,
-        height: frameHeight,
-        maxHeight: frameHeight,
+        ...(explicitOuterHeight && frameHeight !== undefined
+          ? { height: frameHeight, maxHeight: frameHeight }
+          : { maxHeight: spaceBelow }),
         zIndex,
         background: "hsl(var(--window-bg))",
       }}
@@ -152,8 +160,12 @@ export const Window = ({
       </div>
       <div
         className={cn(
-          "min-h-0 flex-1 overflow-y-auto overflow-x-hidden p-5 text-sm leading-relaxed text-foreground scanlines",
+          "overflow-x-hidden p-5 text-sm leading-relaxed text-foreground scanlines",
+          explicitOuterHeight ? "min-h-0 flex-1 overflow-y-auto" : "overflow-y-auto",
         )}
+        style={
+          explicitOuterHeight ? undefined : { maxHeight: bodyMaxHeightWhenAuto }
+        }
       >
         {children}
       </div>

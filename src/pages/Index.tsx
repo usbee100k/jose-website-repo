@@ -311,7 +311,7 @@ const Index = () => {
             onFocus={() => focusApp(id)}
             onClose={() => closeApp(id)}
           >
-            <div className="max-h-[60vh] pr-2">
+            <div className="pr-2">
             <h2 className="text-xl font-bold mb-1">{p.name}</h2>
             <p className="text-xs text-muted-foreground mb-4">{p.desc}</p>
             <div className="space-y-3">
