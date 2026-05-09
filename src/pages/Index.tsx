@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { BootScreen } from "@/components/desktop/BootScreen";
 import { Window } from "@/components/desktop/Window";
 import { Github, Linkedin, Mail, Twitter, FolderGit2, MessageCircle, HelpCircle, Link as LinkIcon, User, Newspaper, Plus } from "lucide-react";
