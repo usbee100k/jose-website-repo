@@ -8,6 +8,8 @@ interface WindowProps {
   initialX: number;
   initialY: number;
   width?: number;
+  /** Preferred outer window height (chrome + body). Shrinks when dragged near the taskbar. */
+  height?: number;
   zIndex: number;
   onFocus: () => void;
   onClose?: () => void;
@@ -19,6 +21,7 @@ export const Window = ({
   initialX,
   initialY,
   width = 420,
+  height: preferredHeightProp,
   zIndex,
   onFocus,
   onClose,
@@ -39,13 +42,18 @@ export const Window = ({
   const sidePadding = isMobile ? 8 : 16;
   const effectiveWidth = Math.min(width, viewport.w - sidePadding * 2);
 
-  /** Space reserved below the window (taskbar + breathing room); must match maxHeight calc. */
+  /** Space reserved below usable desktop (taskbar + breathing room). */
   const bottomChromePx = 60;
-  /** Minimum total window height so content stays scrollable instead of vanishing. */
+  /** Minimum window height when there is enough vertical space (scroll lives in the body). */
   const minWindowHeightPx = 168;
-  const maxY = Math.max(32, viewport.h - bottomChromePx - minWindowHeightPx);
+  /** Keep at least this much of the window visible above the taskbar when dragged far down. */
+  const minVisibleWhenDraggedPx = 40;
+  const bottomLimit = viewport.h - bottomChromePx;
+  const maxY = Math.max(32, bottomLimit - minVisibleWhenDraggedPx);
 
-  // Clamp initial position so the window stays on-screen
+  const preferredHeight =
+    preferredHeightProp ?? Math.min(560, Math.round(viewport.h * 0.72));
+
   const clampedInitial = {
     x: Math.max(sidePadding, Math.min(initialX, viewport.w - effectiveWidth - sidePadding)),
     y: Math.max(32, Math.min(initialY, maxY)),
@@ -61,6 +69,13 @@ export const Window = ({
       y: Math.max(32, Math.min(p.y, maxY)),
     }));
   }, [viewport.w, viewport.h, effectiveWidth, sidePadding, maxY]);
+
+  const spaceBelow = bottomLimit - pos.y;
+  const frameHeight = (() => {
+    let h = Math.min(preferredHeight, spaceBelow);
+    h = Math.max(h, Math.min(minWindowHeightPx, spaceBelow));
+    return Math.max(h, 0);
+  })();
 
   useEffect(() => {
     const apply = (clientX: number, clientY: number) => {
@@ -90,8 +105,6 @@ export const Window = ({
     };
   }, [viewport.w, viewport.h, effectiveWidth, sidePadding, maxY]);
 
-  const windowVerticalExtent = `calc(100vh - ${pos.y + bottomChromePx}px)`;
-
   return (
     <div
       className="absolute animate-window-in window-shadow rounded-md overflow-hidden border border-[hsl(var(--window-chrome))] flex flex-col min-h-0"
@@ -99,8 +112,8 @@ export const Window = ({
         left: pos.x,
         top: pos.y,
         width: effectiveWidth,
-        height: windowVerticalExtent,
-        maxHeight: windowVerticalExtent,
+        height: frameHeight,
+        maxHeight: frameHeight,
         zIndex,
         background: "hsl(var(--window-bg))",
       }}

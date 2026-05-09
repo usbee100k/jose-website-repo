@@ -311,7 +311,7 @@ const Index = () => {
             onFocus={() => focusApp(id)}
             onClose={() => closeApp(id)}
           >
-            <div className="max-h-[60vh] overflow-y-auto pr-2">
+            <div className="pr-2">
             <h2 className="text-xl font-bold mb-1">{p.name}</h2>
             <p className="text-xs text-muted-foreground mb-4">{p.desc}</p>
             <div className="space-y-3">
@@ -361,6 +361,7 @@ const Index = () => {
           initialX={120}
           initialY={70}
           width={760}
+          height={620}
           zIndex={getZ("josetube")}
           onFocus={() => focusApp("josetube")}
           onClose={() => closeApp("josetube")}
@@ -432,7 +433,7 @@ const Index = () => {
               className="h-10 w-10 rounded-sm border border-border shrink-0"
             />
           </div>
-          <div className="max-h-[55vh] overflow-y-auto pr-2 space-y-3 text-sm">
+          <div className="pr-2 space-y-3 text-sm">
             <p>
               hi, i'm Jose — a tech enthusiast based in Santa Cruz (originally from Seattle).
               i love building tools, breaking labs, and figuring out how things work under the hood.
@@ -542,7 +543,7 @@ const Index = () => {
           onClose={() => closeApp("more-faqs")}
         >
           <h2 className="text-lg font-bold mb-3">more questions</h2>
-          <div className="max-h-[55vh] overflow-y-auto pr-2 space-y-3">
+          <div className="pr-2 space-y-3">
             {[
               { q: "what got you into tech?", a: "tinkering with old PCs as a kid and never really stopping." },
               { q: "favorite project so far?", a: "the windows domain controller lab — felt like running a tiny enterprise." },
@@ -594,7 +595,7 @@ const Index = () => {
               </div>
             </div>
 
-            <div className="max-h-[60vh] overflow-y-auto">
+            <div>
               {/* Posts feed */}
               <div className="p-4 space-y-4 bg-card">
                 {posts.map((post) => (
