@@ -118,6 +118,12 @@ const Index = () => {
   // Hardcoded blog posts — only the site owner edits these in code.
   const posts: BlogPost[] = [
     {
+      id: "post-4",
+      title: "test",
+      body: "test",
+      createdAt: "apr 30, 3000",
+    },
+    {
       id: "post-1",
       title: "new homelab milestone",
       body: "finally got my windows domain controller talking nicely to my pfsense box. dns, dhcp, and group policy all behaving. felt good to see clients pick up the right policies on first boot.",
@@ -134,12 +140,6 @@ const Index = () => {
       title: "cisco packet tracer deep dive",
       body: "spent the weekend building out a multi-vlan campus topology in packet tracer. inter-vlan routing on a layer 3 switch, dhcp relay, and acls between segments. wrote up the lab in the projects window.",
       createdAt: "apr 10, 2026",
-    },
-    {
-      id: "post-4",
-      title: "test",
-      body: "test",
-      createdAt: "apr 30, 3000",
     },
   ];
 
