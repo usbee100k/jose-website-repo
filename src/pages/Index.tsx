@@ -451,7 +451,23 @@ const Index = () => {
               with mentoring and teaching ranging from infants, toddlers, and school-aged children.
             </p>
             <p>
-              if you want to know more about me and my work, check out my <a href="/blog" className="text-primary hover:underline">blog</a> or <a href="/projects" className="text-primary hover:underline">projects</a>.
+              if you want to know more about me and my work, check out my{" "}
+              <button
+                type="button"
+                onClick={() => openApp("blog")}
+                className="inline p-0 border-0 bg-transparent font-inherit text-primary hover:underline cursor-pointer"
+              >
+                blog
+              </button>{" "}
+              or{" "}
+              <button
+                type="button"
+                onClick={() => openApp("projects")}
+                className="inline p-0 border-0 bg-transparent font-inherit text-primary hover:underline cursor-pointer"
+              >
+                projects
+              </button>
+              .
             </p>
           </div>
         </Window>
