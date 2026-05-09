@@ -312,6 +312,7 @@ const Index = () => {
                 <div className="absolute bottom-1 right-1 text-[10px] bg-black/70 text-white px-1 rounded">{p.video.duration}</div>
               </button>
             </div>
+            </div>
           </Window>
         );
       })}
