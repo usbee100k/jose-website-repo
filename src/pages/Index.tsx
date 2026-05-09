@@ -115,6 +115,62 @@ const Index = () => {
   const [windows, setWindows] = useState<OpenWindow[]>([{ id: "main", z: 1 }]);
   const [topZ, setTopZ] = useState(1);
   const [activeVideo, setActiveVideo] = useState<VideoMeta | null>(null);
+  const [posts, setPosts] = useState<BlogPost[]>(() => {
+    if (typeof window === "undefined") return [];
+    try {
+      const raw = localStorage.getItem("jose-os.blog.posts");
+      return raw ? (JSON.parse(raw) as BlogPost[]) : [];
+    } catch {
+      return [];
+    }
+  });
+  const [showComposer, setShowComposer] = useState(false);
+  const [draftTitle, setDraftTitle] = useState("");
+  const [draftBody, setDraftBody] = useState("");
+  const [draftImage, setDraftImage] = useState<string | undefined>();
+  const [draftVideo, setDraftVideo] = useState<string | undefined>();
+  const imageInputRef = useRef<HTMLInputElement>(null);
+  const videoInputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    try {
+      localStorage.setItem("jose-os.blog.posts", JSON.stringify(posts));
+    } catch {
+      // ignore quota errors
+    }
+  }, [posts]);
+
+  const fileToDataUrl = (file: File) =>
+    new Promise<string>((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result as string);
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
+    });
+
+  const resetComposer = () => {
+    setDraftTitle("");
+    setDraftBody("");
+    setDraftImage(undefined);
+    setDraftVideo(undefined);
+    setShowComposer(false);
+  };
+
+  const publishPost = () => {
+    if (!draftTitle.trim() && !draftBody.trim() && !draftImage && !draftVideo) return;
+    const post: BlogPost = {
+      id: crypto.randomUUID(),
+      title: draftTitle.trim() || "untitled post",
+      body: draftBody.trim(),
+      imageDataUrl: draftImage,
+      videoDataUrl: draftVideo,
+      createdAt: Date.now(),
+    };
+    setPosts((p) => [post, ...p]);
+    resetComposer();
+  };
+
+  const deletePost = (id: string) => setPosts((p) => p.filter((x) => x.id !== id));
 
   const openApp = (id: AppId) => {
     setTopZ((z) => z + 1);
