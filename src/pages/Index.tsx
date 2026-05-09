@@ -394,7 +394,7 @@ const Index = () => {
               className="h-10 w-10 rounded-sm border border-border shrink-0"
             />
           </div>
-          <div className="space-y-3 text-sm">
+          <div className="max-h-[55vh] overflow-y-auto pr-2 space-y-3 text-sm">
             <p>
               hi, i'm Jose — a tech enthusiast based in Santa Cruz (originally from Seattle).
               i love building tools, breaking labs, and figuring out how things work under the hood.
