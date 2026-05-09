@@ -571,6 +571,168 @@ const Index = () => {
         </Window>
       )}
 
+      {isOpen("blog") && (
+        <Window
+          title="blog.app"
+          initialX={typeof window !== "undefined" ? Math.max(60, window.innerWidth / 2 - 280) : 120}
+          initialY={60}
+          width={560}
+          zIndex={getZ("blog")}
+          onFocus={() => focusApp("blog")}
+          onClose={() => closeApp("blog")}
+        >
+          <div className="-m-5">
+            {/* Blog header */}
+            <div className="px-5 py-4 bg-gradient-to-r from-primary to-primary/70 text-primary-foreground">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h2 className="text-2xl font-bold tracking-tight">jose's blog</h2>
+                  <p className="text-xs opacity-80">notes, builds, and the occasional rant.</p>
+                </div>
+                <button
+                  onClick={() => setShowComposer((s) => !s)}
+                  className="flex items-center gap-1 px-3 py-1.5 text-xs font-semibold bg-primary-foreground text-primary rounded-sm hover:opacity-90"
+                >
+                  <Plus className="h-3.5 w-3.5" />
+                  {showComposer ? "cancel" : "new post"}
+                </button>
+              </div>
+            </div>
+
+            <div className="max-h-[60vh] overflow-y-auto">
+              {/* Composer */}
+              {showComposer && (
+                <div className="p-4 bg-secondary border-b border-border space-y-3">
+                  <input
+                    value={draftTitle}
+                    onChange={(e) => setDraftTitle(e.target.value)}
+                    placeholder="post title..."
+                    className="w-full px-3 py-2 text-sm bg-background border border-border rounded-sm outline-none focus:ring-2 focus:ring-primary"
+                  />
+                  <textarea
+                    value={draftBody}
+                    onChange={(e) => setDraftBody(e.target.value)}
+                    placeholder="what's on your mind?"
+                    rows={4}
+                    className="w-full px-3 py-2 text-sm bg-background border border-border rounded-sm outline-none focus:ring-2 focus:ring-primary resize-y"
+                  />
+
+                  {draftImage && (
+                    <div className="relative">
+                      <img src={draftImage} alt="draft attachment" className="w-full max-h-56 object-cover rounded-sm border border-border" />
+                      <button
+                        onClick={() => setDraftImage(undefined)}
+                        className="absolute top-1 right-1 px-2 py-0.5 text-[10px] bg-black/70 text-white rounded-sm"
+                      >
+                        remove
+                      </button>
+                    </div>
+                  )}
+                  {draftVideo && (
+                    <div className="relative">
+                      <video src={draftVideo} controls className="w-full max-h-56 rounded-sm border border-border bg-black" />
+                      <button
+                        onClick={() => setDraftVideo(undefined)}
+                        className="absolute top-1 right-1 px-2 py-0.5 text-[10px] bg-black/70 text-white rounded-sm"
+                      >
+                        remove
+                      </button>
+                    </div>
+                  )}
+
+                  <div className="flex flex-wrap items-center gap-2">
+                    <input
+                      ref={imageInputRef}
+                      type="file"
+                      accept="image/*"
+                      className="hidden"
+                      onChange={async (e) => {
+                        const f = e.target.files?.[0];
+                        if (f) setDraftImage(await fileToDataUrl(f));
+                        e.target.value = "";
+                      }}
+                    />
+                    <input
+                      ref={videoInputRef}
+                      type="file"
+                      accept="video/*"
+                      className="hidden"
+                      onChange={async (e) => {
+                        const f = e.target.files?.[0];
+                        if (f) setDraftVideo(await fileToDataUrl(f));
+                        e.target.value = "";
+                      }}
+                    />
+                    <button
+                      onClick={() => imageInputRef.current?.click()}
+                      className="flex items-center gap-1 px-2.5 py-1.5 text-xs bg-background border border-border rounded-sm hover:bg-accent"
+                    >
+                      <ImageIcon className="h-3.5 w-3.5" /> photo
+                    </button>
+                    <button
+                      onClick={() => videoInputRef.current?.click()}
+                      className="flex items-center gap-1 px-2.5 py-1.5 text-xs bg-background border border-border rounded-sm hover:bg-accent"
+                    >
+                      <VideoIcon className="h-3.5 w-3.5" /> video
+                    </button>
+                    <div className="flex-1" />
+                    <button
+                      onClick={resetComposer}
+                      className="px-3 py-1.5 text-xs bg-background border border-border rounded-sm hover:bg-accent"
+                    >
+                      cancel
+                    </button>
+                    <button
+                      onClick={publishPost}
+                      className="px-3 py-1.5 text-xs font-semibold bg-primary text-primary-foreground rounded-sm hover:opacity-90"
+                    >
+                      publish
+                    </button>
+                  </div>
+                </div>
+              )}
+
+              {/* Posts feed */}
+              <div className="p-4 space-y-4 bg-card">
+                {posts.length === 0 && !showComposer && (
+                  <div className="text-center py-10 text-sm text-muted-foreground">
+                    no posts yet — click <span className="font-semibold">new post</span> to write your first update.
+                  </div>
+                )}
+                {posts.map((post) => (
+                  <article key={post.id} className="border border-border rounded-sm bg-background overflow-hidden">
+                    <header className="flex items-start justify-between gap-2 px-3 pt-3">
+                      <div>
+                        <h3 className="text-base font-bold leading-tight">{post.title}</h3>
+                        <div className="text-[11px] text-muted-foreground mt-0.5">
+                          {new Date(post.createdAt).toLocaleString()}
+                        </div>
+                      </div>
+                      <button
+                        onClick={() => deletePost(post.id)}
+                        className="text-muted-foreground hover:text-destructive p-1"
+                        aria-label="delete post"
+                      >
+                        <Trash2 className="h-3.5 w-3.5" />
+                      </button>
+                    </header>
+                    {post.imageDataUrl && (
+                      <img src={post.imageDataUrl} alt={post.title} className="w-full max-h-80 object-cover mt-2" />
+                    )}
+                    {post.videoDataUrl && (
+                      <video src={post.videoDataUrl} controls className="w-full max-h-80 mt-2 bg-black" />
+                    )}
+                    {post.body && (
+                      <p className="px-3 py-3 text-sm whitespace-pre-wrap leading-relaxed">{post.body}</p>
+                    )}
+                  </article>
+                ))}
+              </div>
+            </div>
+          </div>
+        </Window>
+      )}
+
       {/* Taskbar */}
       <footer className="absolute bottom-0 inset-x-0 h-9 bg-[hsl(var(--window-chrome))] text-[hsl(var(--window-chrome-foreground))] flex items-center gap-1 px-2 z-50 border-t border-[hsl(30_25%_25%)]">
         <button
