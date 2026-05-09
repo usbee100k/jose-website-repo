@@ -273,6 +273,7 @@ const Index = () => {
             onFocus={() => focusApp(id)}
             onClose={() => closeApp(id)}
           >
+            <div className="max-h-[60vh] overflow-y-auto pr-2">
             <h2 className="text-xl font-bold mb-1">{p.name}</h2>
             <p className="text-xs text-muted-foreground mb-4">{p.desc}</p>
             <div className="space-y-3">
@@ -310,6 +311,7 @@ const Index = () => {
                 </div>
                 <div className="absolute bottom-1 right-1 text-[10px] bg-black/70 text-white px-1 rounded">{p.video.duration}</div>
               </button>
+            </div>
             </div>
           </Window>
         );
