@@ -1,9 +1,18 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { BootScreen } from "@/components/desktop/BootScreen";
 import { Window } from "@/components/desktop/Window";
-import { Github, Linkedin, Mail, Twitter, FolderGit2, MessageCircle, HelpCircle, Link as LinkIcon, User } from "lucide-react";
+import { Github, Linkedin, Mail, Twitter, FolderGit2, MessageCircle, HelpCircle, Link as LinkIcon, User, Newspaper, Image as ImageIcon, Video as VideoIcon, Trash2, Plus } from "lucide-react";
 
-type AppId = "main" | "contact" | "projects" | "links" | "faqs" | "more-faqs" | "josetube" | "about" | `project:${string}`;
+type AppId = "main" | "contact" | "projects" | "links" | "faqs" | "more-faqs" | "josetube" | "about" | "blog" | `project:${string}`;
+
+interface BlogPost {
+  id: string;
+  title: string;
+  body: string;
+  imageDataUrl?: string;
+  videoDataUrl?: string;
+  createdAt: number;
+}
 
 interface VideoMeta {
   title: string;
