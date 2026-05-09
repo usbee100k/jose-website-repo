@@ -124,7 +124,7 @@ const Index = () => {
       createdAt: "apr 30, 3000",
     },
     {
-      id: "post-1",
+      id: "post-3",
       title: "new homelab milestone",
       body: "finally got my windows domain controller talking nicely to my pfsense box. dns, dhcp, and group policy all behaving. felt good to see clients pick up the right policies on first boot.",
       createdAt: "may 2, 2026",
@@ -136,7 +136,7 @@ const Index = () => {
       createdAt: "apr 24, 2026",
     },
     {
-      id: "post-3",
+      id: "post-1",
       title: "cisco packet tracer deep dive",
       body: "spent the weekend building out a multi-vlan campus topology in packet tracer. inter-vlan routing on a layer 3 switch, dhcp relay, and acls between segments. wrote up the lab in the projects window.",
       createdAt: "apr 10, 2026",
@@ -439,12 +439,19 @@ const Index = () => {
             </p>
             <p>
               my interests sit at the crossroads of networking, sysadmin work, and full-stack
-              development. lately i've been deep in homelab projects, CLI tooling, and learning
+              development. lately i've been deep in homelab projects, CLI tooling, and mainly learning
               everything i can about enterprise infrastructure.
             </p>
             <p>
-              when i'm not in front of a terminal, you'll find me chasing waves, hiking the
-              redwoods, or hunting for the next great cup of coffee.
+              when i'm not in front of a terminal, you'll find me chasing waves, gaming,
+              or just hanging out with my partner.
+            </p>
+            <p>
+              i'm a big family guy, i've been an uncle all my life and i have a lot of experience
+              with mentoring and teaching ranging from infants, toddlers, and school-aged children.
+            </p>
+            <p>
+              if you want to know more about me and my work, check out my <a href="/blog" className="text-primary hover:underline">blog</a> or <a href="/projects" className="text-primary hover:underline">projects</a>.
             </p>
           </div>
         </Window>
