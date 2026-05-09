@@ -9,9 +9,9 @@ interface BlogPost {
   id: string;
   title: string;
   body: string;
-  imageDataUrl?: string;
-  videoDataUrl?: string;
-  createdAt: number;
+  imageUrl?: string;
+  videoUrl?: string;
+  createdAt: string;
 }
 
 interface VideoMeta {
