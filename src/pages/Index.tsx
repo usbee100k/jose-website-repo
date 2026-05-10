@@ -133,12 +133,14 @@ const Index = () => {
       id: "post-2",
       title: "shipped the portfolio rewrite",
       body: "redid the whole site as a desktop OS. windows, taskbar, draggable everything. it's silly and i love it. blog window included so i can drop updates without leaving the vibe.",
+      imageUrl: "/placeholder.svg",
       createdAt: "apr 24, 2026",
     },
     {
       id: "post-1",
       title: "cisco packet tracer deep dive",
       body: "spent the weekend building out a multi-vlan campus topology in packet tracer. inter-vlan routing on a layer 3 switch, dhcp relay, and acls between segments. wrote up the lab in the projects window.",
+      videoUrl: "/testfoootage.mp4",
       createdAt: "apr 10, 2026",
     },
   ];
