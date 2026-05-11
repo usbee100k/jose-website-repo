@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { BootScreen } from "@/components/desktop/BootScreen";
 import { Window } from "@/components/desktop/Window";
 import { Github, Linkedin, Mail, Twitter, FolderGit2, MessageCircle, HelpCircle, Link as LinkIcon, User, Newspaper, Plus } from "lucide-react";
+import blogMascot from "@/assets/blog-mascot.jpeg";
 
 type AppId = "main" | "contact" | "projects" | "links" | "faqs" | "more-faqs" | "josetube" | "about" | "blog" | `project:${string}`;
 
@@ -577,9 +578,9 @@ const Index = () => {
       {isOpen("blog") && (
         <Window
           title="blog.app"
-          initialX={typeof window !== "undefined" ? Math.max(60, window.innerWidth / 2 - 280) : 120}
+          initialX={typeof window !== "undefined" ? Math.max(40, window.innerWidth / 2 - 360) : 80}
           initialY={60}
-          width={560}
+          width={720}
           zIndex={getZ("blog")}
           onFocus={() => focusApp("blog")}
           onClose={() => closeApp("blog")}
@@ -602,9 +603,21 @@ const Index = () => {
               </div>
             </div>
 
-            <div>
-              {/* Posts feed */}
-              <div className="p-4 space-y-4 bg-card">
+            {/* Sticky mascot + posts */}
+            <div className="flex items-start gap-3 p-4 bg-card">
+              <aside className="shrink-0 w-40 sticky top-2 self-start hidden sm:block">
+                <div className="border border-border rounded-sm bg-background p-2">
+                  <img
+                    src={blogMascot}
+                    alt="blog mascot"
+                    className="w-full h-auto animate-float [image-rendering:pixelated] select-none pointer-events-none"
+                    draggable={false}
+                  />
+                  <div className="mt-1 text-center text-[10px] text-primary font-mono animate-flicker">[GOTO-&gt;DOS]</div>
+                </div>
+              </aside>
+
+              <div className="flex-1 min-w-0 space-y-4">
                 {posts.map((post) => (
                   <article key={post.id} className="border border-border rounded-sm bg-background overflow-hidden">
                     <header className="px-3 pt-3">
