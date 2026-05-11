@@ -48,7 +48,7 @@ const makePoster = (label: string) => `data:image/svg+xml;utf8,${encodeURICompon
 
 const PROJECTS = [
   {
-    slug: "multitool-cli",
+    slug: "multitool",
     name: "Multitool CLI",
     desc: "a tiny tool for managing local applications.",
     body: [
@@ -64,7 +64,7 @@ const PROJECTS = [
     },
   },
   {
-    slug: "windows-domain-controller-lab",
+    slug: "wdc-lab",
     name: "Windows Domain Controller Lab",
     desc: "Creating a 'New Forest', documenting my proccess",
     body: [
@@ -79,7 +79,7 @@ const PROJECTS = [
     },
   },
   {
-    slug: "cisco-packet-tracer-network",
+    slug: "cpt-network",
     name: "Cisco Packet Tracer Network",
     desc: "Recreating enterprise level networks virtually.",
     body: [
@@ -94,13 +94,17 @@ const PROJECTS = [
     },
   },
   {
-    slug: "how-i-coded-my-portfolio",
+    slug: "portfolio",
     name: "How I Coded My Portfolio",
     desc: "How did I do this and why?",
     body: [
-      "Compost is a log rotation daemon with one weird trick: it summarizes old logs into structured digests instead of just gzipping and forgetting them.",
-      "Useful for long-running servers where you want history without the disk bill.",
-      "Written in Rust. Pluggable storage backends (local, s3, b2).",
+      "Why did I code my portfolio? I wanted to learn more about the process of building a website and how to code it. I want to show passion for love for tech.",
+      "I get my experience from working hands on with my projects and learning from my mistakes. I am a quick learner and I am always looking to improve my skills.",
+      "With the ever changing landscape of technology, I am always looking to new ways to learn, with the rise of AI it can help to learn faster and more efficiently.",
+      "We must not rely on it completely, but it can be a great tool to learn. Thats what I did with this website. I used a AI agent to help me code the website and used the combination of inspect in webbrowser I was able to learn about the code that was being used.",
+      "As I went through the proccess of wanting to improve my website. I learned and used AI along with offical documentation to understand what was being used and how it works.",
+      "This was pretty simple to understand as I already have a background in HTML CSS. Just took a little creativity.",
+      "You can see my whole thinking proccess through each commits. I loved learning from the site building to aquiring the website domain to deployment through vercel.",
     ],
     video: {
       src: `/testfoootage3.mp4`,
