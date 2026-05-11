@@ -72,6 +72,8 @@ export default {
         "type": { from: { width: "0" }, to: { width: "100%" } },
         "boot": { "0%": { opacity: "0" }, "100%": { opacity: "1" } },
         "progress": { "0%": { width: "0%" }, "100%": { width: "100%" } },
+        "float": { "0%, 100%": { transform: "translateY(0px)" }, "50%": { transform: "translateY(-6px)" } },
+        "flicker": { "0%, 100%": { opacity: "1" }, "45%": { opacity: "0.85" }, "55%": { opacity: "0.95" } },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
@@ -81,6 +83,8 @@ export default {
         "blink": "blink 1s step-end infinite",
         "boot": "boot 0.6s ease-out",
         "progress": "progress 2.4s ease-out forwards",
+        "float": "float 4s ease-in-out infinite",
+        "flicker": "flicker 2.4s ease-in-out infinite",
       },
     },
   },
