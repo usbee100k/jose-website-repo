@@ -69,8 +69,8 @@ const PROJECTS = [
     name: "Windows Domain Controller Lab",
     desc: "Creating a 'New Forest', documenting my proccess",
     body: [
-      "Mossy is a markdown-first static site generator focused on tiny output and zero config.",
-      "Drop a folder of .md files in, get a fast, themeable site out. Supports drafts, RSS, and a watch mode that hot-reloads in <50ms.",
+      "I wanted to simulate working help desk, setting up GPO's, simulating multiple users, and deployment of a domain server.",
+      "This taught me hands on more about active directory.",
       "Built with TypeScript and a custom markdown pipeline. Used to power my blog and a couple of friends' sites.",
     ],
     video: {
@@ -99,7 +99,7 @@ const PROJECTS = [
     name: "How I Coded My Portfolio",
     desc: "How did I do this and why?",
     body: [
-      "Why did I code my portfolio? I wanted to learn more about the process of building a website and how to code it. This is a way I can show my passion for tech.",
+      "Why? I wanted to learn more about the process of building a website and how to code it. This is a way I can show my passion for tech.",
       "I get my experience from working hands on with my own projects and learning from my mistakes. I am a quick learner and I'm always looking to improve my skills.",
       "With the ever changing landscape of technology, I am always looking for new ways to learn, with the rise of AI it can help to learn faster and more efficiently.",
       "We must not rely on it completely, but it can be a great tool to learn. Thats what I did with this website. I used a AI agent to help me code the website and used the combination of inspect in webbrowser; I was able to learn about the code that was being used.",
@@ -610,10 +610,10 @@ const Index = () => {
                   <img
                     src={blogMascot}
                     alt="blog mascot"
-                    className="w-full h-auto animate-float [image-rendering:pixelated] select-none pointer-events-none"
+                    className="w-full h-auto animate-float select-none pointer-events-none"
                     draggable={false}
                   />
-                  <div className="mt-1 text-center text-[10px] text-primary font-mono animate-flicker">[GOTO-&gt;DOS]</div>
+                  <div className="mt-1 text-center text-[10px] text-primary font-mono animate-flicker">funniest tech blog :P</div>
                 </div>
               </aside>
 
