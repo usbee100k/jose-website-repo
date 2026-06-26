@@ -583,6 +583,7 @@ const Index = () => {
           initialX={typeof window !== "undefined" ? Math.max(40, window.innerWidth / 2 - 360) : 80}
           initialY={60}
           width={720}
+          height={520}
           zIndex={getZ("blog")}
           onFocus={() => focusApp("blog")}
           onClose={() => closeApp("blog")}
