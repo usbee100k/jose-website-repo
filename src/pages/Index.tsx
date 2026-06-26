@@ -71,7 +71,7 @@ const PROJECTS = [
     body: [
       "I wanted to simulate working help desk, setting up GPO's, simulating multiple users, and deployment of a domain server.",
       "This taught me hands on more about active directory.",
-      "Built with TypeScript and a custom markdown pipeline. Used to power my blog and a couple of friends' sites.",
+      "--",
     ],
     video: {
       src: `/testfoootage1.mp4`,
@@ -84,9 +84,10 @@ const PROJECTS = [
     name: "Cisco Packet Tracer Network",
     desc: "Recreating enterprise level networks virtually.",
     body: [
-      "Foliage is a set of design tokens — colors, typography, spacing — pulled from forests, mosses, and old library books.",
-      "Ships as CSS variables, Tailwind preset, and Figma library. The greens are the real stars.",
-      "Open source and being slowly adopted by a few small studios.",
+      "My goal wiith this project was to be able to show my ability to create a real enterprise network through Cisco Packet Tracer.",
+      "With this i learned how to configure a switch, how routers speak to each other, creating Vlans/subnets, ",
+      "My goal is to be a network engineer, this project allows me learn, practice, break things, then fix them again, and prove that i understand what im doing.",
+      "s",
     ],
     video: {
       src: `/testfoootage2.mp4`,
@@ -190,7 +191,7 @@ const Index = () => {
           <span className="opacity-80 hidden sm:inline">Help</span>
         </div>
         <div className="flex items-center gap-3">
-          <span className="opacity-80 hidden sm:inline">guest@portfolio</span>
+          <span className="opacity-80 hidden sm:inline">welcome@portfolio</span>
           <span>{now}</span>
         </div>
       </header>
@@ -332,7 +333,7 @@ const Index = () => {
               <button
                 onClick={() => {
                   setActiveVideo({
-                    title: `${p.name} — demo walkthrough`,
+                    title: `${p.name} — demo`,
                     src: p.video.src,
                     poster: p.video.poster,
                     channel: "jose",
@@ -553,8 +554,8 @@ const Index = () => {
           <h2 className="text-lg font-bold mb-3">more questions</h2>
           <div className="pr-2 space-y-3">
             {[
-              { q: "what got you into tech?", a: "tinkering with old PCs as a kid and never really stopping." },
-              { q: "favorite project so far?", a: "the windows domain controller lab — felt like running a tiny enterprise." },
+              { q: "what got you into tech?", a: "tinkering with any electronics as a kid, building my own computers, and then eventually getting into programming and networking." },
+              { q: "favorite project so far?", a: "creating my homelab, it taught me the most about networking and troubleshooting. it's kind of janky but it works and she'll get an upgrade soon." },
               { q: "mac, windows, or linux?", a: "linux for servers, mac for daily driving, windows for the lab." },
               { q: "favorite editor?", a: "vscode with vim keybindings. fight me." },
               { q: "coffee or tea?", a: "coffee. always coffee. pour-over on weekends." },
