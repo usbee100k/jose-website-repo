@@ -547,6 +547,7 @@ const Index = () => {
           initialX={180}
           initialY={120}
           width={460}
+          height={420}
           zIndex={getZ("more-faqs")}
           onFocus={() => focusApp("more-faqs")}
           onClose={() => closeApp("more-faqs")}
