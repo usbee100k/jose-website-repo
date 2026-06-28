@@ -100,12 +100,12 @@ const PROJECTS = [
     name: "How I Coded My Portfolio",
     desc: "How did I do this and why?",
     body: [
-      "Why? I wanted to learn more about the process of building a website and how to code it. This is a way I can show my passion for tech.",
+      "Why? I wanted to learn more about the process of building a website and how to code it. Im passionate about the things I do and this is a cool way to show it.",
       "I get my experience from working hands on with my own projects and learning from my mistakes. I am a quick learner and I'm always looking to improve my skills.",
-      "With the ever changing landscape of technology, I am always looking for new ways to learn, with the rise of AI it can help to learn faster and more efficiently.",
-      "We must not rely on it completely, but it can be a great tool to learn. Thats what I did with this website. I used a AI agent to help me code the website and used the combination of inspect in webbrowser; I was able to learn about the code that was being used.",
+      "With the ever changing landscape of technology, I am always looking for new ways to learn, and with the rise of AI it can help to learn faster and more efficiently.",
+      "We must not rely on it completely, but it can be a great tool to learn. Thats what I did with this website. I used a AI agent to help me code the website and used the combination of inspect in webbrowser along with vscode; I was able to learn about the code that was being used.",
       "As I went through the proccess of wanting to improve my website. I learned and used AI along with offical documentation to understand what was being used and how it works.",
-      "This was pretty simple to understand as I already have a background in HTML CSS. Just took a little creativity.",
+      "This was pretty simple to understand as I already have a background in HTML CSS and more. It just took a little creativity.",
       "You can see my whole thinking proccess through each commits. I loved learning this project, from the site building, to aquiring the website domain, and to deployment through vercel.",
       "Maybe not the most traditional way, but it worked! Through reading and a whole lot of trial and error. hahaha...",
     ],
@@ -255,7 +255,7 @@ const Index = () => {
             ))}
           </div>
           <div className="mt-4 pt-3 border-t border-border text-xs text-muted-foreground">
-            tip: drag windows by the title bar. they stack like a real desktop.
+            tip: drag windows by the title bar. they stack like a real desktop. click start button bottom left to open readme.txt again.
           </div>
         </Window>
       )}
@@ -316,6 +316,7 @@ const Index = () => {
             initialX={200 + i * 30}
             initialY={140 + i * 20}
             width={520}
+            height={420}
             zIndex={getZ(id)}
             onFocus={() => focusApp(id)}
             onClose={() => closeApp(id)}
