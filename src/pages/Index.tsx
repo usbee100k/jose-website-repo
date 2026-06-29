@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { BootScreen } from "@/components/desktop/BootScreen";
 import { Window } from "@/components/desktop/Window";
 import { Github, Linkedin, Mail, Twitter, FolderGit2, MessageCircle, HelpCircle, Link as LinkIcon, User, Newspaper, Plus } from "lucide-react";
+import { toast } from "@/components/ui/sonner";
 import blogMascot from "@/assets/blog-mascot.jpeg";
 
 type AppId = "main" | "contact" | "projects" | "links" | "faqs" | "more-faqs" | "josetube" | "about" | "blog" | `project:${string}`;
@@ -53,10 +54,10 @@ const PROJECTS = [
     name: "Multitool CLI",
     desc: "a tiny tool for managing local applications.",
     body: [
-      "Terra CLI is a small command-line tool for spinning up and tearing down local development environments without the usual ceremony.",
-      "It wraps docker, devcontainers, and a few sane defaults into one command. Built because i kept rewriting the same bash scripts on every project.",
-      "Stack: Go, cobra, a sprinkle of bubbletea for the interactive bits. Cross-compiled for macOS, linux and windows.",
-      "Lessons learned: shipping a CLI is 20% code and 80% making the help text not embarrassing.",
+      "--",
+      "--",
+      "--",
+      "--",
     ],
     video: {
       src: `/testfoootage.mp4`,
@@ -175,6 +176,15 @@ const Index = () => {
   const getZ = (id: AppId) => windows.find((w) => w.id === id)?.z ?? 0;
   const isOpen = (id: AppId) => windows.some((w) => w.id === id);
 
+  const copyToClipboard = async (text: string, label?: string) => {
+    try {
+      await navigator.clipboard.writeText(text);
+      toast.success("Copied to clipboard", { description: label ?? text });
+    } catch {
+      toast.error("Couldn't copy", { description: "Try selecting the text manually." });
+    }
+  };
+
   if (!booted) return <BootScreen onDone={() => setBooted(true)} />;
 
   const now = new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
@@ -272,11 +282,25 @@ const Index = () => {
         >
           <h2 className="text-lg font-bold mb-3">get in touch</h2>
           <ul className="space-y-2">
-            <li className="flex items-center gap-2"><Mail className="h-4 w-4 text-primary" /> <a href="mailto:josejcorral77.jc@gmail.com" className="hover:underline">josejcorral77.jc@gmail.com</a></li>
-            <li className="flex items-center gap-2"><Twitter className="h-4 w-4 text-primary" /> @jose</li>
-            <li className="flex items-center gap-2"><Linkedin className="h-4 w-4 text-primary" /> linkedin.com/in/josecorr</li>
+            {([
+              { icon: Mail, text: "josejcorral77.jc@gmail.com" },
+              { icon: Twitter, text: "@-" },
+              { icon: Linkedin, text: "linkedin.com/in/josecorr" },
+            ] as const).map(({ icon: Icon, text }) => (
+              <li key={text}>
+                <button
+                  type="button"
+                  onClick={() => copyToClipboard(text)}
+                  className="flex items-center gap-2 w-full text-left hover:underline cursor-pointer"
+                  title="Click to copy"
+                >
+                  <Icon className="h-4 w-4 text-primary shrink-0" />
+                  {text}
+                </button>
+              </li>
+            ))}
           </ul>
-          <p className="mt-4 text-xs text-muted-foreground">i usually reply within a day or two.</p>
+          <p className="mt-4 text-xs text-muted-foreground">click any item to copy. i usually reply within a day or two.</p>
         </Window>
       )}
 
@@ -519,9 +543,9 @@ const Index = () => {
           <div className="space-y-3">
             {[
               { q: "where are you based?", a: "Seattle Wa originally but i recently relocated to Santa Cruz." },
-              { q: "are you available for work?", a: "hungry for work in tech but will need 2 weeks atleast — ping me." },
+              { q: "are you available for work?", a: "hungry for work in tech available for work now — ping me." },
               { q: "what stack do you use?", a: "typescript, react, go, postgres, and lots of coffee." },
-              { q: "why the desktop theme?", a: "i like windows that overlap. don't you?" },
+              { q: "why the desktop theme?", a: "to show my love for computers and i think it's fun to play with haha." },
             ].map((f) => (
               <div key={f.q}>
                 <div className="font-semibold">› {f.q}</div>
@@ -558,10 +582,10 @@ const Index = () => {
             {[
               { q: "what got you into tech?", a: "tinkering with any electronics as a kid, building my own computers, and then eventually getting into programming and networking." },
               { q: "favorite project so far?", a: "creating my homelab, it taught me the most about networking and troubleshooting. it's kind of janky but it works and she'll get an upgrade soon." },
-              { q: "mac, windows, or linux?", a: "linux for servers, mac for daily driving, windows for the lab." },
-              { q: "favorite editor?", a: "vscode with vim keybindings. fight me." },
-              { q: "coffee or tea?", a: "coffee. always coffee. pour-over on weekends." },
-              { q: "do you game?", a: "occasionally — mostly strategy and the odd shooter with friends." },
+              { q: "mac, windows, or linux?", a: "linux for servers, mac and windows for daily driving." },
+              { q: "favorite editor?", a: "cursor for coding, nano for text editing." },
+              { q: "coffee or tea?", a: "coffee. always coffee." },
+              { q: "do you game?", a: "occasionally — mostly multiplayer open worlds and shooters with friends." },
               { q: "what are you learning right now?", a: "deeper networking — subnetting, vlans, and routing protocols." },
               { q: "any certifications?", a: "working toward CompTIA Network+ and eventually CCNA." },
               { q: "open to remote work?", a: "yep, remote or hybrid. bay area in person also works." },
