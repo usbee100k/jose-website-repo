@@ -10,6 +10,8 @@ interface WindowProps {
   width?: number;
   /** Preferred outer window height (chrome + body). Shrinks when dragged near the taskbar. */
   height?: number;
+  /** Reserve the scrollbar's space so content width never changes when it appears. */
+  stableScroll?: boolean;
   zIndex: number;
   onFocus: () => void;
   onClose?: () => void;
@@ -22,6 +24,7 @@ export const Window = ({
   initialY,
   width = 420,
   height: preferredHeightProp,
+  stableScroll = false,
   zIndex,
   onFocus,
   onClose,
@@ -163,9 +166,10 @@ export const Window = ({
           "overflow-x-hidden p-5 text-sm leading-relaxed text-foreground scanlines",
           explicitOuterHeight ? "min-h-0 flex-1 overflow-y-auto" : "overflow-y-auto",
         )}
-        style={
-          explicitOuterHeight ? undefined : { maxHeight: bodyMaxHeightWhenAuto }
-        }
+        style={{
+          ...(explicitOuterHeight ? undefined : { maxHeight: bodyMaxHeightWhenAuto }),
+          ...(stableScroll ? { scrollbarGutter: "stable" } : undefined),
+        }}
       >
         {children}
       </div>

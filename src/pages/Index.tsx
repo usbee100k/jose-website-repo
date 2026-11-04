@@ -1,15 +1,16 @@
 import { useState, useEffect } from "react";
 import { BootScreen } from "@/components/desktop/BootScreen";
 import { Window } from "@/components/desktop/Window";
-import { Github, Linkedin, Mail, Twitter, FolderGit2, MessageCircle, HelpCircle, Link as LinkIcon, User, Newspaper, Plus } from "lucide-react";
+import { AsciiFight } from "@/components/desktop/AsciiFight";
+import { Github, Linkedin, Mail, Twitter, FolderGit2, MessageCircle, HelpCircle, Link as LinkIcon, User, Newspaper, Plus, Gamepad2 } from "lucide-react";
 import { toast } from "@/components/ui/sonner";
 import blogMascot from "@/assets/blog-mascot.jpeg";
 
-type AppId = "main" | "contact" | "projects" | "links" | "faqs" | "more-faqs" | "josetube" | "about" | "blog" | `project:${string}`;
+type AppId = "main" | "contact" | "projects" | "links" | "faqs" | "more-faqs" | "josetube" | "about" | "blog" | "game" | `project:${string}`;
 
 type BlogBlock =
   | { type: "text"; body: string }
-  | { type: "image"; url: string; alt?: string }
+  | { type: "image"; url: string; alt?: string; full?: boolean; caption?: string }
   | { type: "video"; url: string };
 
 interface BlogPost {
@@ -54,13 +55,17 @@ const makePoster = (label: string) => `data:image/svg+xml;utf8,${encodeURICompon
 const PROJECTS = [
   {
     slug: "kubernetes",
-    name: "Kubernetes Infrastructure Script",
-    desc: "an automated script install of kubernetes for instant deployment.",
+    name: "homelabCD",
+    desc: "one command to turn a few ubuntu servers into a highly available kubernetes homelab, managed through gitops.",
     body: [
-      "After aquiring an old laptop I wanted to get into setting up a Kubernetes cluster. I've been more interested in redundancy, as I have had a lot of issues with my current setup. I will also mention I wanted to learn about this since redundancy is a pilar of networking.",
-      "The idea that your software survives even if your hardware fails was essential to integrate into my current setup. I want high availability and POWERRR. So my ideal setup is 4 computers, 2 worker nodes, 2 control planes, but I want one of them to have the workload taint. That way I have more power, but then still have an extra control plane incase one of them fails.",
-      "So I already had a general understanding of Kubernetes, simply put it; An orchestration of containters, like docker, across multiple computers. So the way I wanted to learn was gonna be through making Infrastructure As Code. A combination of deployment through script, control through yaml, and GitOps implemention for easy backups, updates, rollbacks, upgrades, and many more opportunities achieved through Kubernetes/containerization.",
-      "The first part was creating what I wanted it to look like, what I wanted it to do and what I wanted it to use. So I created a bootstraper, a control plane initializer, worker node initializer, and a couple other options.",
+      "After acquiring an old laptop I wanted to get into setting up a Kubernetes cluster. I've been more interested in redundancy, as I've had a lot of issues with my current setup. I'll also mention I wanted to learn about this since redundancy is a pillar of networking.",
+      "The idea that your software survives even if your hardware fails was essential to integrate into my setup. I want high availability and POWERRR. So my ideal setup is 4 computers, 2 worker nodes, 2 control planes, but I want one of the control planes to run workloads too. That way I have more power, but still have an extra control plane in case one of them fails.",
+      "I already had a general understanding of Kubernetes, simply put; an orchestration of containers, like docker, across multiple computers. The way I wanted to learn was through making Infrastructure as Code. A combination of deployment through script, control through yaml, and GitOps for easy backups, updates, rollbacks, upgrades, and a lot more you get with Kubernetes/containerization.",
+      "The first part was figuring out what I wanted it to look like, what I wanted it to do, and what I wanted it to use. So I created a bootstrapper, a control plane initializer, a worker node initializer, and a couple other options. That script grew into homelabCD.",
+      "How it works now: on a fresh Ubuntu Server 24.04 machine you run sudo ./install.sh and choose Bootstrap New Cluster. It asks a few questions once (domain, MetalLB IP range, GitOps repo, optional Longhorn disk and WireGuard VPN), then goes step by step: validates the host, preps the OS, installs containerd, kubeadm/kubelet/kubectl, sets up kube-vip, runs kubeadm init, installs Cilium, Helm, and Argo CD, and finally hooks the cluster up to my own GitHub repo. You can even pause after each step to check what it did.",
+      "What gets installed: kube-vip gives the API server a virtual IP so the cluster survives losing a control plane, MetalLB hands out LAN IPs, ingress-nginx and cert-manager give every web UI its own HTTPS address with Let's Encrypt, and Longhorn keeps copies of each volume on different nodes so an app starts back up somewhere else if a node goes down. On top of that I've got DuckDNS, a WireGuard VPN, PostgreSQL with pgAdmin, Rancher, and Hermes, an AI agent with a local LLM option.",
+      "The GitOps part is my favorite. After the bootstrap, Argo CD keeps the cluster in sync with my repo, so if I want to change what's running I just commit and push. Adding nodes is easy too. The join credentials get encrypted with age and pushed to a private bootstrap repo, so new nodes can join from a menu (or remotely over SSH) without me copying secrets around by hand.",
+      "200+ commits later it handles way more than I planned: health checks, OS updates with safe reboots, moving app storage between Longhorn and a node's disk, cleaning up stuck pods, and decommissioning nodes. All of it runs from KubesTUI, the terminal UI I built for it (check it out in my projects).",
     ],
     video: {
       src: `/testfoootage.mp4`,
@@ -84,18 +89,24 @@ const PROJECTS = [
     },
   },
   {
-    slug: "cpt-network",
-    name: "Cisco Packet Tracer Network",
-    desc: "Recreating enterprise level networks virtually.",
+    slug: "kubestui",
+    name: "KubesTUI",
+    desc: "a terminal UI to run my whole kubernetes homelab from one place.",
     body: [
-      "My goal wiith this project was to be able to show my ability to create a real enterprise network through Cisco Packet Tracer.",
-      "With this i learned how to configure a switch, how routers speak to each other, creating Vlans/subnets, ",
-      "My goal is to be a network engineer, this project allows me learn, practice, break things, then fix them again, and prove that i understand what im doing.",
-      "s",
+      "After building my Kubernetes install script, I realized running everything through a plain text menu and remembering a bunch of commands wasn't the smooth experience I wanted. I wanted something a beginner could pick up, or honestly just me at 2am not wanting to type out every kubectl command. So I built KubesTUI, a terminal UI written in Go that sits on top of my homelabCD setup.",
+      "What it does: it's basically the control center for my cluster. Bootstrap the first control plane, add control planes and worker nodes (on the node itself or remotely over SSH), clean up stuck pods, decommission a node, turn services on/off, and sync Argo CD apps. It also has a Command Center, a btop style live view of the cluster, a SOC console with network and DNS (Pi-hole) pages, a two pane file manager for my Longhorn volumes, file transfers to nodes, and an SSH console.",
+      "The setup: on a fresh Ubuntu Server 24.04 machine you clone homelabCD and run sudo ./install.sh. It checks the host, installs what it needs (yq and Go), builds KubesTUI, launches it, and leaves a kbtui command so you can open it again whenever. From there you pick Bootstrap New Cluster, answer a few questions like your VIP, MetalLB IP range, GitOps repo, and domain, and it sets up Kubernetes, Cilium, kube-vip, MetalLB, Longhorn, cert-manager, and Argo CD for you.",
+      "Don't want to SSH into a node every time? There's a one line install for Linux/macOS (and a PowerShell one for Windows) that grabs the latest release, and the bootstrap node can even share KubesTUI with any workstation on your LAN.",
+      "It starts in dry run mode by default, so you can click around and see exactly what commands would run before it touches anything. The UI is built with tview and tcell, and Go's ssh library handles all the remote stuff.",
+      "This one has been my favorite so far. 50+ commits in a few weeks of late nights, a whole lot of breaking SSH and fixing it again hahaha... It's still early development, but it turned my janky homelab into something I can actually manage, and that's exactly the kind of work I want to be doing as a DevOps/network engineer.",
     ],
+    image: {
+      src: `/command_center_kubestui.png`,
+      caption: "command center, a live btop style view of the whole cluster",
+    },
     video: {
       src: `/testfoootage2.mp4`,
-      poster: makePoster("cisco-packet-tracer.mp4"),
+      poster: makePoster("kubestui.mp4"),
       duration: "0:15",
     },
   },
@@ -151,21 +162,248 @@ const Index = () => {
   // },
   
   const posts: BlogPost[] = [
+
+    {
+      id: "post-15",
+      title: "my own tool, still gitops first",
+      content: [
+        {
+          type: "text",
+          body: "one of the newest additions to the command center is argo cd resync. if an app shows up as OutOfSync in the apps panel, i can select it and resync it right there, without leaving KubesTUI or opening the argo cd web UI.",
+        },
+        {
+          type: "text",
+          body: "and that's just one of a lot of things you can do from KubesTUI. adding and removing nodes, turning services on and off, cleaning up stuck pods, moving files to my longhorn volumes, updating the cluster, it's all in one place. but there was one rule i didn't want to break while building all of it: git is still the source of truth.",
+        },
+        {
+          type: "text",
+          body: "KubesTUI doesn't go around gitops, it works with it. the resync button doesn't change what's supposed to be running, it just tells argo cd to match the cluster to what's already in my repo. if i want to actually change something, it still goes through a commit and push. that way i get the easy buttons of my own tool, and i still keep the history, rollbacks, and reviewable changes you get with gitops.",
+        },
+        {
+          type: "image",
+          url: "/Update-Gitops-Template example.png",
+          alt: "updating the gitops templates from KubesTUI",
+          full: true,
+          caption: "updating my gitops templates from KubesTUI. the design has changed a bit since this screenshot, but it still works essentially the same.",
+        },
+        {
+          type: "text",
+          body: "even updates follow that rule. when i update my homelabCD templates, KubesTUI pulls my gitops repo, renders the templates with my saved settings, and only changes something if there's actually something new. everything still lands in the repo, and argo cd takes it from there.",
+        },
+        {
+          type: "text",
+          body: "that mattered a lot to me because gitops is the direction i want to grow in. i'm really interested in gitops and devops positions, and i didn't want to build something that only works my way. i wanted something that follows the same practices a real team would use.",
+        },
+        {
+          type: "text",
+          body: "building this whole thing solo taught me a ton, but honestly the thing i'm most excited about is getting to do this kind of work with a team. i'm a team player, i love learning from people who know more than me, and i like taking initiative, like seeing a problem in my own homelab and building a tool to fix it. hopefully that's what i get to do next hahaha...",
+        },
+      ],
+      createdAt: "october 28, 2026",
+    },
+
+    {
+      id: "post-14",
+      title: "sharing KubesTUI + one device, many clusters",
+      content: [
+        {
+          type: "text",
+          body: "one of my favorite features in KubesTUI is share kubestui with a workstation. i got tired of ssh'ing into a node every time i wanted to check on the cluster, so now any computer on my LAN can grab KubesTUI straight from the cluster itself.",
+        },
+        { type: "image", url: "/Share Kubetui with powershell.png", alt: "sharing KubesTUI from a node to a windows workstation", full: true },
+        {
+          type: "text",
+          body: "here's how it works. on a node you open the share screen and it starts a little download server on the LAN, behind a one-time link that shuts itself off after a timer. it shows you a one line command for windows (powershell) and one for macOS/linux, and you can copy either with a single key.",
+        },
+        {
+          type: "text",
+          body: "you paste that command on the computer you want to control the cluster from, and it downloads the right KubesTUI build for that machine, checks its SHA-256 checksum, installs it for your user, and even adds it to your PATH. the downloads panel on the node shows every file as it gets sent, which is super satisfying to watch hahaha...",
+        },
+        {
+          type: "text",
+          body: "security was a big thing for me here. only the program gets shared through that link, never any cluster credentials. those get set up afterwards over SSH when you pick connect a new cluster and enter a control plane's IP and your SSH login. and if you're away from home, you can just install it from github instead.",
+        },
+        {
+          type: "text",
+          body: "the best part is that connect a new cluster isn't a one time thing. one workstation can connect to as many clusters as you want, so my main pc can manage my homelab cluster and a test cluster in a VM from the same place, without having to jump between machines.",
+        },
+        {
+          type: "text",
+          body: "that's actually how i tested this, the node in the screenshot is a VM in virtualbox and my windows pc installed KubesTUI from it in seconds. having one device that can control multiple clusters makes it feel way less like a homelab script and more like a real tool.",
+        },
+      ],
+      createdAt: "october 28, 2026",
+    },
+
+    {
+      id: "post-13",
+      title: "i actually love network troubleshooting",
+      content: [
+        {
+          type: "text",
+          body: "weird thing to say, but i've realized i genuinely love hunting down network issues. there's something about a pod that can't reach another pod, or a service that just won't get an IP, that makes me want to stay up way too late until it's fixed.",
+        },
+        {
+          type: "text",
+          body: "and kubernetes gives you a LOT of places for networking to break. pod networking through cilium, the virtual IP for the API server with kube-vip, metallb handing out loadbalancer IPs on my LAN, ingress-nginx and cert-manager getting every web UI its HTTPS address, and then dns on top of all of it. every layer is its own little puzzle.",
+        },
+        {
+          type: "text",
+          body: "my favorite part is the process. figure out which layer it is, is it the pod, the node, the service, the loadbalancer, or dns? then narrow it down one step at a time until it finally clicks. every time i fix one i understand how the whole thing fits together a little better, and that's exactly the kind of work i want to be doing as a network engineer.",
+        },
+        {
+          type: "text",
+          body: "the other thing that made all of this way more fun is the update system i added to homelabCD and KubesTUI. updating the cluster used to mean a bunch of manual steps on every node. now it's super easy, i just run the update and it takes care of it.",
+        },
+        {
+          type: "text",
+          body: "that was huge while developing KubesTUI. i'd find a bug while debugging the cluster, fix it, push it, and have the fix running in minutes instead of rebuilding everything by hand. that quick loop of break it, find it, fix it, update it is honestly what kept me going on those late nights hahaha...",
+        },
+      ],
+      createdAt: "october 28, 2026",
+    },
+
+    {
+      id: "post-12",
+      title: "a closer look at the command center",
+      content: [
+        {
+          type: "text",
+          body: "i mentioned the command center in my last post, but it deserves its own post because it's my favorite screen in KubesTUI. it's the btop/k9s style live view of my whole cluster, all on one screen, refreshing every 2 seconds.",
+        },
+        { type: "image", url: "/command_center_kubestui.png", alt: "KubesTUI command center", full: true },
+        {
+          type: "text",
+          body: "it's split into 8 panels. at the top is the cluster panel, which shows the API server, how many nodes and pods are ready, argo cd health, the metallb pool, and storage, plus live CPU, memory, and network graphs for the whole cluster.",
+        },
+        {
+          type: "text",
+          body: "under that is the nodes panel. every node gets its own CPU, memory, disk, and network bars with little history graphs, so i can see right away which machine is working the hardest. (yes, my nodes are named gojo, megumi, nanami, toji, and yuta hahaha...)",
+        },
+        {
+          type: "text",
+          body: "then there's pods, sorted by CPU, with restart counts in red so the troublemakers stand out. namespaces shows usage per namespace, and apps shows every argo cd app with its sync and health status, so i know right away if something drifted from my gitops repo.",
+        },
+        {
+          type: "text",
+          body: "on the right side, network shows the metallb IPs and the HTTPS links for every web UI, storage shows disk usage per node and my longhorn volumes, and alerts collects warnings from kubernetes events and argo cd in one place.",
+        },
+        {
+          type: "text",
+          body: "it's all keyboard driven like btop. 1-8 jumps to a panel, tab moves to the next one, enter opens details, / searches, s sorts, z zooms a panel to full screen, +/- changes the refresh speed, and p pauses it. no more running five different kubectl commands just to see if everything is okay.",
+        },
+      ],
+      createdAt: "october 27, 2026",
+    },
+
+    {
+      id: "post-11",
+      title: "finally, quality of life for the installer",
+      content: [
+        {
+          type: "text",
+          body: "it's finally here. the quality of life update i've been talking about since the first version of my kubernetes install script. no more plain text menus and memorizing a bunch of commands, the installer now comes with its own terminal UI written in go.",
+        },
+        {
+          type: "text",
+          body: "i call it KubesTUI. the inspiration was tools like k9s and btop, those terminal apps that just feel good to use. everything live, everything on one screen, and you move around with your keyboard instead of typing out kubectl commands at 2am hahaha...",
+        },
+        {
+          type: "text",
+          body: "now on a fresh ubuntu server you run sudo ./install.sh and it checks the host, grabs what it needs (yq and go), builds KubesTUI and launches it. it also leaves a kbtui command so you can jump back in whenever. from there you pick bootstrap new cluster, answer a few questions, and it sets everything up for you.",
+        },
+        {
+          type: "text",
+          body: "inside it you can add control planes and worker nodes (even remotely over ssh), clean up stuck pods, decommission nodes, turn services on/off, and sync argo cd apps. my favorite part is the command center, a btop style live view of the whole cluster. there's also a file manager for my longhorn volumes and an ssh console built right in.",
+        },
+        {
+          type: "text",
+          body: "it starts in dry run mode by default, so you can click around and see exactly what it would run before it actually touches anything. that was a big one for me, since the whole point is making this friendly for a beginner, or just me not wanting to break my cluster again.",
+        },
+        {
+          type: "text",
+          body: "learning go for this was a ride. tview and tcell for the UI, go's ssh library for all the remote stuff, and a lot of breaking ssh and fixing it again. still early development, but it finally feels like a real tool instead of a janky script. check out KubesTUI in my projects for more!",
+        },
+      ],
+      createdAt: "october 27, 2026",
+    },
+
+    {
+      id: "post-10",
+      title: "birthday gift :}",
+      content: [
+        {
+          type: "text",
+          body: "my very sweet partner gifted me a thinkcentre mini workstation, great specs and perfect for my bare metal kubernetes setup.",
+        },
+      ],
+      createdAt: "august 24, 2026",
+    },
+
+    {
+      id: "post-9",
+      title: "kubernetes script update",
+      content: [
+        {
+          type: "text",
+          body: "i cant believe what has happened these past few days...",
+        },
+        {
+          type: "text",
+          body: "i've been pulling late nights building my first general scripting project. my thought process has been easy kubernetes deployment replication and customization.",
+        },
+        {
+          type: "text",
+          body: "it's been a lot of figuring out what i want from the script and it's objective. i wanted it to first install necessary dependencies that need to be installed, so that the system has everything to be easily intergrated into a new/existing hardware deployment. this is something that would be perfect for an overkill homelab, which is exactly what i want.",
+        },
+        { type: "image", url: "/Kubes1.webp" },
+        { type: "image", url: "/Kubes2.webp" },
+        {
+          type: "text",
+          body: "overall most of my road blocks came from coding issues and just seeing what works with what, well enough to keep going till i atleast had a good foundation. that i can hopefully work on and make more pretty/enchance the user experience.",
+        },
+        {
+          type: "text",
+          body: "so far i've got it at a good point where i can; first, setup a brand new ubuntu server from scratch with all prerequisites needed, second, ask what you want to do like a health check, instalizing control plane/worker nodes, display worker/control plane keys, etc.",
+        },
+      ],
+      createdAt: "august 10, 2026",
+    },
+  
+    {
+      id: "post-8",
+      title: "kubernetes scripting project",
+      content: [
+        {
+          type: "text",
+          body: "i wanted to create a script that would automate the installation of kubernetes, but not just that, i also wanted to initialize new control planes and worker nodes easily. on top of that i also wanted easy control and configuration through gitops.", 
+        },
+        {
+          type: "text",
+          body: "the goal is infrastructure as code, as this would be easily replicated, edited, updated, rollbacked, and many more fun things you get when you go with an overkill option like; kubernetes to run a small, 2 person use only home server. this has been super fun figuring out on both, the software and networking side. a deployment like this is something i would love to work on, in a professional networking workplace.", 
+       }, 
+       {
+          type: "text",
+          body: "i have a lot of work ahead of me, but i think this is something i would like to constantly work on and improve. like user interface and overall smooth experience for a beginnner ideally, or someone who just want to setup their own easy complex kubernetes setup hahaha... we will see how it goes.", 
+     },
+     ],      
+     createdAt: "july 31, 2026",
+    },
     {
       id: "post-7",
       title: "headless laptop update",
       content: [
         {
           type: "text",
-          body: "0", 
+          body: "i have a working headless laptop server. this my 3rd server for my future kubernetes homelab cluster. I was able to search up a pattern for my specific laptop bios settings, to get to secure boot and disabling it.", 
         },
         {
           type: "text",
-          body: "test1", 
+          body: "once i did that i was able to press f10+Enter to save bios settings then it detects my ssd with a live boot on it (made with rufus). since it boots into ubuntu live install it i finally get a disply through hdmi. then i'm able to setup ubuntu and after a completed install, i run as completely headless. i only ssh into it from there. ", 
          }, 
          {
           type: "text",
-          body: "text2", 
+          body: "this was a lot of tinkering and seeing what works and what doesn't. i'm glad i didn't give up and that i was able to learn from every detail, to come out with a new working server.", 
        },
       ],      
       createdAt: "jul 15, 2026",
@@ -353,6 +591,7 @@ const Index = () => {
           { id: "links", label: "Links", icon: LinkIcon },
           { id: "faqs", label: "FAQs", icon: HelpCircle },
           { id: "blog", label: "Blog", icon: Newspaper },
+          { id: "game", label: "Game", icon: Gamepad2 },
         ] as const).map(({ id, label, icon: Icon }) => (
           <button
             key={id}
@@ -491,6 +730,20 @@ const Index = () => {
                 <p key={idx} className="text-sm">{para}</p>
               ))}
             </div>
+            {"image" in p && (
+              <div className="mt-4">
+                <div className="text-xs uppercase tracking-wider text-muted-foreground mb-2">screenshot</div>
+                <a href={p.image.src} target="_blank" rel="noreferrer">
+                  <img
+                    src={p.image.src}
+                    alt={p.image.caption}
+                    loading="lazy"
+                    className="w-full h-auto rounded-sm border border-border"
+                  />
+                </a>
+                <p className="text-[11px] text-muted-foreground mt-1">{p.image.caption}</p>
+              </div>
+            )}
             <div className="mt-4">
               <div className="text-xs uppercase tracking-wider text-muted-foreground mb-2">demo video</div>
               <button
@@ -836,12 +1089,16 @@ const Index = () => {
                       }
                       if (block.type === "image") {
                         return (
-                          <img
-                            key={idx}
-                            src={block.url}
-                            alt={block.alt ?? post.title}
-                            className="w-full max-h-80 object-cover"
-                          />
+                          <figure key={idx}>
+                            <img
+                              src={block.url}
+                              alt={block.alt ?? post.title}
+                              className={block.full ? "w-full h-auto" : "w-full max-h-80 object-cover"}
+                            />
+                            {block.caption && (
+                              <figcaption className="px-3 pt-1 text-[11px] text-muted-foreground italic">{block.caption}</figcaption>
+                            )}
+                          </figure>
                         );
                       }
                       return (
@@ -853,6 +1110,22 @@ const Index = () => {
               </div>
             </div>
           </div>
+        </Window>
+      )}
+
+      {isOpen("game") && (
+        <Window
+          title="fight.gif"
+          initialX={260}
+          initialY={160}
+          width={650}
+          stableScroll
+          zIndex={getZ("game")}
+          onFocus={() => focusApp("game")}
+          onClose={() => closeApp("game")}
+        >
+          <AsciiFight />
+          <p className="mt-2 text-[11px] text-muted-foreground">jose vs the bug that broke ssh. every. single. time.</p>
         </Window>
       )}
 
